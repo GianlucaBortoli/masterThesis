@@ -1,0 +1,109 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Template per Elaborato di Laurea
+% DISI - Dipartimento di Ingegneria e Scienza dell’Informazione
+%
+% update 2015-09-10
+%
+% Per la generazione corretta del
+% pdflatex nome_file.tex
+% bibtex nome_file.aux
+% pdflatex nome_file.tex
+% pdflatex nome_file.tex
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% formato FRONTE RETRO
+\documentclass[epsfig,a4paper,11pt,titlepage,twoside,openany]{book}
+% import packages
+\input{packages}
+\singlespacing
+
+\begin{document}
+    % Frontispiece
+    % nessuna numerazione
+    \pagenumbering{gobble}
+    \input{frontispiece}
+    \clearpage
+
+    % Acknowledgements
+    \input{sections/acknowledgements}
+    \clearpage
+    \pagestyle{plain} % nessuna intestazione e pie pagina con numero al centro
+
+    % inizio numerazione pagine in numeri arabi
+    \mainmatter
+    % indice
+    \tableofcontents
+    \clearpage
+
+    % gruppo per definizone di successione capitoli senza interruzione di pagina
+    \begingroup
+        % nessuna interruzione di pagina tra capitoli
+        % ridefinizione dei comandi di clear page
+        \renewcommand{\cleardoublepage}{}
+        \renewcommand{\clearpage}{}
+        % redefinizione del formato del titolo del capitolo
+        % da formato
+        %   Capitolo X
+        %   Titolo capitolo
+        % a formato
+        %   X   Titolo capitolo
+
+        \titleformat{\chapter}
+            {\normalfont\Huge\bfseries}{\thechapter}{1em}{}
+
+        \titlespacing*{\chapter}{0pt}{0.59in}{0.02in}
+        \titlespacing*{\section}{0pt}{0.20in}{0.02in}
+        \titlespacing*{\subsection}{0pt}{0.10in}{0.02in}
+
+        % sommario
+        \input{sections/abstract}
+        % lista dei capitoli
+        \input{sections/chapter1}
+        \input{sections/chapter2}
+        \input{sections/chapter3}
+    \endgroup
+
+
+    % bibliografia in formato bibtex
+    % aggiunta del capitolo nell'indice
+    \addcontentsline{toc}{chapter}{Bibliography}
+    % stile con ordinamento alfabetico in funzione degli autori
+    \bibliographystyle{plain}
+    \bibliography{biblio}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Nota
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Nella bibliografia devono essere riportati tutte le fonti consultate
+%% per lo svolgimento della tesi. La bibliografia deve essere redatta
+%% in ordine alfabetico sul cognome del primo autore.
+%%
+%% La forma della citazione bibliografica va inserita secondo la fonte utilizzata:
+%%
+%% LIBRI
+%% Cognome e iniziale del nome autore/autori, la data di edizione, titolo, casa editrice, eventuale numero dell’edizione.
+%%
+%% ARTICOLI DI RIVISTA
+%% Cognome e iniziale del nome autore/autori, titolo articolo, titolo rivista, volume, numero, numero di pagine.
+%%
+%% ARTICOLI DI CONFERENZA
+%% Cognome e iniziale del nome autore/autori (anno), titolo articolo, titolo conferenza, luogo della conferenza (città e paese), date della conferenza, numero di pagine.
+%%
+%% SITOGRAFIA
+%% La sitografia contiene un elenco di indirizzi Web consultati e disposti in ordine alfabetico.
+%% E’ necessario:
+%%   Copiare la URL (l’indirizzo web) specifica della pagina consultata
+%%   Se disponibile, indicare il cognome e nome dell’autore, il titolo ed eventuale sottotitolo del testo
+%%   Se disponibile, inserire la data di ultima consultazione della risorsa (gg/mm/aaaa).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \titleformat{\chapter}
+        {\normalfont\Huge\bfseries}{Appendix \thechapter}{1em}{}
+    % sezione Allegati - opzionale
+    \appendix
+    \input{sections/appendix}
+
+\end{document}
