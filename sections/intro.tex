@@ -1,4 +1,48 @@
 %!TEX root=../thesis.tex
 \chapter{Introduction} \label{cha:intro}
 
-Introduction \cite{*} % TODO: remove me
+In the last few years companies are putting a huge effort in developing a wide variety of 
+web frameworks to create Graphical User Interfaces (GUIs). Let us think about the success of Facebook's
+React~\cite{fbreact} and Google's AngularJS~\cite{angularjs}, which are two of the most
+used and famous javascript libraries to build user interfaces across the web.
+These technologies are very well known to websites developers which use them to
+build their products more easily.\\
+Talking about the enterprise environment, most of the desktop pieces of software have its own GUI
+written in a native programming language that is often the same throughout the entire application.
+One of the most common examples is Java~\cite{gosling1995java}, which makes use of the JavaFX~\cite{javafx}
+platform or the Swing~\cite{javaswing} toolkit to build the graphics.\\
+What may sound surprising at a first glance is the trend of building user interfaces taking
+advantage of web technologies. They allow to design and prototype UIs very quickly and, in
+most of the cases, they give also better-looking results.
+A very good example of the usage of such technologies is NASA's Open MCT~\cite{openmct}.
+OpenMCT is a next-generation mission control software developed both for desktop and mobile
+usage. It has been used for mission planning and operations in the Resouce 
+Prospector mission~\cite{andrews2014introducing} at NASA's Research Center as well as for
+data analysis of spacecraft missions. This software is clearly the evidence that web
+technologies have a huge potential that goes beyond the mere website development and that they 
+can be applied to deliver highly critical services.
+Another kind of web application that is becoming very popular is 2D and 3D map navigators.
+Let us think to the technologies lying in the core of very successfull products like
+Google Maps, Microsoft's Bing Maps and OpenStreetMap.\\
+Given that running UIs inside a browser window is gaining popularity, both inside the
+developer communities and the companies, one of the main aspects that has to be analyzed
+in detail is the performances that can be delivered and guaranteed. This is probably one of
+the hardest tasks a web developer has to face building an application. Finding bugs
+or bottlenecks inside the code can be a draining and tricky activity due to the huge number
+of components and layers involved to keep the application up and running. Furthermore,
+being able to prove that a web application respects some kind of temporal constraint
+is even harder or, in some case, impossible. Hence, the main aim of this thesis is
+to build an analysis framework able to address and to study in detail the
+abovementioned problems.
+
+The test application developed and analized in this work is a 3D-capable navigator.
+This application is one of the main requirements for the ACANTO~\cite{acanto}
+project\footnote{This project has received funding from the European Union’s Horizon
+2020 research and innovation programme - Societal Challenge 1 (DG CONNECT/H) under 
+grant agreement No 643644.}, more specifically as part of the FriWalk robotic walker.
+The work field of ACANTO is to study and develop an effective strategy to fight the
+physical and cognitive decline of older adults in the face of ever shrinking financial
+resources for health care and social services. This is achieved by means of FriWalk,
+a robotic walking assistant that supports the user in its dayly activities requiring
+physical exercise. Furthermore, the system has to reccomend activities selected 
+by a senior user (eg. a doctor) to the user.
