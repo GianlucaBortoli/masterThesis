@@ -13,20 +13,28 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% formato FRONTE RETRO
+% front-back format
 \documentclass[epsfig,a4paper,11pt,titlepage,twoside,openany]{book}
 % import packages
 \input{packages}
 \singlespacing
 
+% solves problem to ensure vertical mode for clean[double]page
+% https://goo.gl/TxPyga
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{\par}{}{}
+\makeatother
+
+
 \begin{document}
-    % Frontispiece
-    % nessuna numerazione
+    % no page numbering
     \pagenumbering{gobble}
+    % frontispiece 
     \input{frontispiece}
     \clearpage
 
-    % Acknowledgements
+    % acknowledgements
     \input{sections/acknowledgements}
     \clearpage
     \pagestyle{plain} % nessuna intestazione e pie pagina con numero al centro
@@ -43,28 +51,34 @@
         % ridefinizione dei comandi di clear page
         \renewcommand{\cleardoublepage}{}
         \renewcommand{\clearpage}{}
+
         % redefinizione del formato del titolo del capitolo
         % da formato
         %   Capitolo X
         %   Titolo capitolo
         % a formato
         %   X   Titolo capitolo
-
-        \titleformat{\chapter}
-            {\normalfont\Huge\bfseries}{\thechapter}{1em}{}
-
+        \titleformat
+            {\chapter} % command
+            {\normalfont\Huge\bfseries} % format
+            {\thechapter} % label
+            {1em} % sep
+            {} % before-code
         \titlespacing*{\chapter}{0pt}{0.59in}{0.02in}
         \titlespacing*{\section}{0pt}{0.20in}{0.02in}
         \titlespacing*{\subsection}{0pt}{0.10in}{0.02in}
 
-        % sommario
+        % abstract
         \input{sections/abstract}
-        % lista dei capitoli
-        \input{sections/chapter1}
-        \input{sections/chapter2}
-        \input{sections/chapter3}
+        % chapters
+        \input{sections/intro}
+        \input{sections/rt_background}
+        \input{sections/tech_stack}
+        \input{sections/problem_definition}
+        \input{sections/rt_model}
+        \input{sections/experiments}
+        \input{sections/conclusion}
     \endgroup
-
 
     % bibliografia in formato bibtex
     % aggiunta del capitolo nell'indice
@@ -72,7 +86,15 @@
     % stile con ordinamento alfabetico in funzione degli autori
     \bibliographystyle{plain}
     \bibliography{biblio}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    % appendix
+    %\titleformat{\chapter}
+    %    {\normalfont\Huge\bfseries}{Appendix \thechapter}{1em}{}
+    % sezione Allegati - opzionale
+    %\appendix
+    %\input{sections/appendix}
+\end{document}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Nota
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,12 +120,3 @@
 %%   Se disponibile, indicare il cognome e nome dell’autore, il titolo ed eventuale sottotitolo del testo
 %%   Se disponibile, inserire la data di ultima consultazione della risorsa (gg/mm/aaaa).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    \titleformat{\chapter}
-        {\normalfont\Huge\bfseries}{Appendix \thechapter}{1em}{}
-    % sezione Allegati - opzionale
-    \appendix
-    \input{sections/appendix}
-
-\end{document}
