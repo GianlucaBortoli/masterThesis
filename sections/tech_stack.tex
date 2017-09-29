@@ -114,9 +114,42 @@ point and its color'') that are copied to a buffer of the graphics hardware.
 
 
 \section{WebGL} \label{sec:webgl}
+WebGL is a Javascript standard API for rendering 3D graphics within any compatible
+desktop or mobile web browser\footnote{A compatibility table for all the most
+common browsers can be found at the following link: \url{http://caniuse.com/#feat=webgl}.}
+without any external program or tool. WebGL programs are composed of two parts
+of code: some Javascript code, that can be mixed with any other part of a standard
+HTML page and is executed by the browser, and some shader code, which is written 
+in the OpenGL Shading Language (GLSL) and is executed by the GPU.
+WebGL APIs and are exposed to the Javascript engine of the browser through the
+HTML5 canvas element are based on the OpenGL for Embedded Systems (ES) technology,
+which is a subset of standard OpenGL library. Moreover, this standard is both
+royalty-free and open-source\footnote{The WebGL source code can be found on GitHub
+at the following link: \url{https://github.com/KhronosGroup/WebGL}.}.
+
+In the last few years a lot of frameworks and utility libraries have been developed
+and the huge capabilities of these 3D graphics APIs become visible to everybody.
+A lot of libraries have been built on WebGL to render scenes and 3D objects, such
+as BabylonJS~\cite{babylon3d}, three.js~\cite{cabello2010three}, and 
+Cesium~\cite{cozzi20113d} (see Section \ref{sec:cesium} for a more detailed description).
+Moreover, there also has been a rapid emergence~\cite{parisi2014programming} of
+game engines exploiting this technology like the Unreal Engine~\cite{games2007unreal}
+and Unity~\cite{engine9unity}.
+
+The reason why the 3D navigator developed in this work uses a framework built on
+WebGL is that it is, at the time of writing, the only alternative to build real
+3D graphics inside a browser. This choiche allows to write Javascript source
+code to develop the application and, at the same time, to exploit the power of
+a GPU using a framweork that takes care of implementing the shaders programs.
+To be more precise, looking at the whole system architecture shown in Figure
+\ref{img:system_arch}, WebGL is a technology that lie inside the browser
+(in this specific case Google Chrome). The browser is the one responsible
+for the communication with the actual implementation of OpenGL, which is Mesa
+in this case study.
 
 
-\section{Cesium framework}
+
+\section{Cesium framework} \label{sec:cesium}
 
 
 \section{Goole Chrome's architechture}
