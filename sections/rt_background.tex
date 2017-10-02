@@ -2,14 +2,15 @@
 \chapter{Real-Time background} \label{cha:rt_background}
 
 The work described in this thesis has many theoretical foundations that has to be
-clear in order to understand the reasons behind some design choiches and assumptions. 
-All the needed notions in the real-time theory are explained in the following sections.
+clear in order to understand the reasons behind some of the design choiches and
+assumptions. All the needed notions in the real-time theory are explained in the
+following sections.
 
 
 \section{Task model} \label{sec:task_model}
 This model considers a set of real-time tasks \( T = \{\tau_{i}\} \)
 sharing a Central Processing Unit (CPU). Every task
-is composed of a stream of jobs \( J_{i,\,k} \), identifying the \( k^{th} \)
+is composed of a stream of jobs \( J_{i,\,k} \) identifying the \( k^{th} \)
 instance of the \( i^{th} \) task in the set \( T \). The concept of multiple
 jobs composing a task can be better understood looking at Figure \ref{img:task_model}.
 \begin{figure}[!htb]\label{img:task_model}
@@ -26,12 +27,15 @@ Every job is formally defined as a touple
         the \( i^{th} \) task
     \item \( r_{i,\,k} \) is the \emph{release} time; it is the time when
         the job arrives to the scheduler and it can be chosen for execution
-        by the system (and actually taken in charge by the CPU).
+        by the system (and actually taken in charge by the CPU). In Figure
+        \ref{img:task_model} it is represented by the down arrows along the
+        timeline.
     \item \( f_{i,\,k} \) is the \emph{finishing} time; it is the instant when
         the computation for the job \( J_{i,\,k} \) ends.
     \item \( c_{i,\,k} \) is the \emph{computation} time; it is the amount of
         time for which the job \( J_{i,\,k} \) is running. This can also be seen
-        as the real load on the CPU.
+        as the real load on the CPU, that is symbolized by the rectangles
+        in Figure \ref{img:task_model}.
 \end{itemize} 
 
 In addition, the computation time \( c_{i,\,k} \) is generally assumed to be an
@@ -40,16 +44,19 @@ This happens when two random variables \( X \) and \( Y \) have
 the same probability distribution and both are mutually
 independent, meaning that the occurrence of \( X \) does not interfere with 
 the probability of occurrence of \( Y \) (and vice versa).
-Hence for each job instance, \( c_{i,\,k} \) is a random
-variable described by a certain Probability Mass Function (PMF).
+Hence, for each job instance, \( c_{i,\,k} \) is a random
+variable described by a certain Probability Mass Function (PMF) since it
+takes values in the discrete field.
 The i.i.d. assumption is one of the milestones of the real-time modeling theory.
 However, the analysis proposed in Chapter \ref{cha:rt_model} will relax this 
 constraint following the study proposed by Fr\'{i}as et al
-in~\cite{frias2017probabilistic}.
+in~\cite{frias2017probabilistic}, where a novel mathematical model is applied
+in order to describe computation times that are not following the i.i.d.
+assumption.
 
 Another very important concept is the worst-case execution time (WCET).
 It represents the maximum fraction of CPU time spent to execute a task
-\( \tau_{i} \) and it can be computed by the following equation:
+\( \tau_{i} \) and it can be computed using the following equation:
 \begin{equation}\label{eq:wcet}
     W_{i} = \ceil[\bigg]{\frac{c_{i,\,j}}{T_{i}}}
 \end{equation}
@@ -63,14 +70,14 @@ Equation \ref{eq:wcet} as:
 Furthermore, every real-time job has to respect a temporal constraint called
 deadline. The standard approach is to have a deterministic deadline for a job
 that cannot be missed (hard real-time), but other models handles also
-probabilistic and less strict deadlines (soft real-time).
-More formally, every job \( J_{i,\,k} \) has a relative deadline (\( D_{i} \)) that
-is used to define an absolute deadline (\( d_{i,\,k} \)) as follows:
+less strict and probabilistic deadlines (soft real-time).
+More formally, every job \( J_{i,\,k} \) has a relative deadline \( D_{i} \) that
+is used to define an absolute deadline \( d_{i,\,k} \) as follows:
 \begin{equation}
     d_{i,\,k} = r_{i,\,k} + D_{i}
 \end{equation}
 
-Such a deadline is said to be respected if \( f_{i,\,k} \leq d_{i,\,k} \) and missed
+Such deadline is said to be respected if \( f_{i,\,k} \leq d_{i,\,k} \) and missed
 if \( f_{i,\,k} > d_{i,\,k} \). Talking about probabilistic deadlines, it is
 possible to say that a deadline is respected if 
 \( \Pr\,\{f_{i,\,k} > r_{i,\,k} + D_{i} \} \leq p_{i} \) and it is missed otherwise.
