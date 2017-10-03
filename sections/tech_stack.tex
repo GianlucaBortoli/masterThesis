@@ -7,7 +7,7 @@ stack under study is quite complex. Hence, this chapter aims at explaining
 all its remarkable sections.
 
 
-\section{FriWalk's architechture}
+\section{FriWalk's architechture}\label{sec:friwalk_architechture}
 The whole system architechture can be divided into two main parts. One that
 is completely platform agnostic and another one that is platform dependent.
 This distinction is due to the fact that different operating systems handle
@@ -247,4 +247,56 @@ offered by Cesium can be found in~\cite{cesiumapi}.
 
 
 \section{Goole Chrome's architechture}
+As previously mentioned in Section \ref{sec:friwalk_architechture}, Google Chrome
+is the browser chosen for the work of this thesis. This section aims at explaining
+how Google Chrome is structured internally and how it interacts with the graphics
+system.
 
+Traditionally, web browsers only relied on the CPU for all the workload produced
+by the page load. Nowadays GPUs (integrated or dedicated) are a very common piece
+of hardware that almost every computer and smartphone owns. Hence a lot of attention
+has been payed to the ability of graphics hardware of compositing also web pages
+content much faster with respect to using only the CPU. Exploiting GPUs in a web
+browser not only allows to use specific hardware for drawing pixels, but also to
+enhence the parallelism between CPU and GPU, which can work together for building
+a very optimized rendering pipeline. To better understand how GPU comes into play
+inside Google Chrome, the notion of \emph{compositor}~\cite{gpucompositing} has to
+be described first.
+The compositor is a piece of software inside the browser that coordinates the frame
+lifecycles and it manages the internal graphics data structures. The compositor
+is allowed to use the GPU to perform its drawing step. In this hardware-accelerated
+architechture, compositing happens directly on the GPU via calls to the specific 3D
+APIs implemented by the OS instead of communicating with the renderer process via
+Inter Process Communication (IPC) and shared memory for the bitmaps representing
+the page content.
+
+Having said that, it is crucial to explain Google Chrome's renderer process issues
+commands to the GPU. First of all, in the multi-process nature of the web browser
+there exists a dedicated process for this task: the \emph{GPU process}. The existance
+of the GPU process is a design decision made by Google's engineers mainly for
+security concenrns. This is due to the sandbox protecting each renderer process
+in Chrome, which means that it cannot directly issue calls to the 3D graphics APIs
+made available by the OS (eg. OpenGL). For this reason it is the GPU process' job
+to take care of this part of the rendering pipeline, since it is specifically
+designed to provide access to the system's 3D graphics APIs from within the renderer
+process sandbox.
+As it is possible to see from Figure \ref{img:chrome_gpu_compositing}, Chrome's
+GPU interaction happens via a client-server model.
+\begin{figure}[!htb]
+    \center{\includegraphics[width=0.8\linewidth]{chrome_gpu_architechture.png}}
+    \caption{Google Chrome's GPU compositing.}
+    \label{img:chrome_gpu_compositing}
+\end{figure}
+
+The flow of information works as follows:
+\begin{itemize}
+    \item the \emph{client} (ie. code running inside the renderer process) serializes
+        calls for the system's 3D graphics into a ring buffer called
+        \emph{command buffer}~\cite{gpucommandbffer}. The command buffer is a portion
+        of memory which is shared between itself and the server counterpart of
+        the architechture.
+    \item the \emph{server} (ie. the GPU process) runs in a less restrictive sandbox
+        and is allowed to access the 3D APIs available on the system. It takes the
+        serialized commands which are into the buffer, it parses them and finally it
+        issues the graphics calls to the Mesa driver.
+\end{itemize}
