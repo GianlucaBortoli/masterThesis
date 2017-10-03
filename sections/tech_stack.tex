@@ -158,6 +158,86 @@ the actual implementation of OpenGL, which is Mesa in this case study.
 
 
 \section{Cesium framework} \label{sec:cesium}
+Cesium\footnote{\url{https://github.com/AnalyticalGraphicsInc/cesium}.} is an
+open-source JavaScript library for building 3D globes and maps.
+It is one of the leading technologies in the
+field and its main characteristic is to achieve the ``best possible performance,
+precision, visual quality, platform support, community, and ease of use''.
+As previously described in Section \ref{sec:webgl}, it is one between a wide
+possibility of frameworks for building interactive 3D maps. Cesium is chosen to
+build the core of the navigator application for its outstanding performances,
+its well written documentation and because it is very easy to use. This last aspect
+may not seem so important at a first glance; on the other hand, when dealing with
+complex systems as the FriWalk it is very important to wisely choose its building
+blocks so that they can be very well integrated to build the system as a whole
+final product. Moreover Cesium is actively developed and maintained by a company
+whose main interest is delivering the best possible library for powering its
+map-based software.
+
+\subsection{Cesium's Renderer architechture}
+Another important feature of the Cesium framework is its custom WebGL engine called
+\emph{Renderer}. It is built on the author's previous experience developing
+other 3D globes, which is explained in very detail in~\cite{cozzi20113d}, and it
+is responsible for collecting every interaction with WebGL in a single place.
+
+The centralization of the Renderer instead of scattering WebGL function calls
+all over the library has many and important benefits. First of all, it makes the
+library very easy to use from the developer point of view, since it acts as an
+intermediate layer of abstraction with respect to plain WebGL calls. Moreover,
+it allows Cesium to build its runtime shader pipeline and its GLSL library. Last
+but not least, optimizing the Renderer code through caching techniques allows
+to highly improve performances allowing every other part of the framework to
+benefit from it. As it is possible to see from Figure \ref{img:cesium_renderer},
+the Renderer is composed of the following main parts:
+\begin{itemize}
+    \item the \emph{VertexArray} is a container of vertex attributes and indices
+        which are stored in some internal buffers to reduce the number of WebGL
+        calls to the minimum.
+    \item the \emph{RenderState} includes all the WebGL functions states needed to
+        perform a draw call. For example, it contains depth, blending and stencil
+        states,
+    \item the \emph{ShaderProgram} is a compiled/linked program with all its
+        uniform matrix operations.
+    \item the \emph{FrameBuffer} is a container for textures/rendererbuffer
+        attachments which is the target of a draw call.
+\end{itemize}
+
+\begin{figure}[!htb]\label{img:cesium_renderer}
+    \center{\includegraphics[width=0.55\linewidth]{cesium_renderer.jpg}}
+    \caption{The components inside Cesium's Renderer.}
+\end{figure}
+
+When Cesium executes a command, it first binds the framebuffer (if it is different
+from the previous command), it applies the renderer states which are different from
+the ones used in the last execution, it binds\footnote{This step may involve
+compiling and/or linking the shader.} the shader program and finally it
+issues a \emph{drawElements} or a \emph{drawArray} call.
+
+Of course, the Renderer is a peculiarity of this library, but it is still only
+one of its components. The Renderer uses the \emph{Scene} object to allocate and
+create the WebGL resources needed for Cesium.
+\begin{figure}[!htb]\label{img:cesium_stack}
+    \center{\includegraphics[width=0.45\linewidth]{cesium_stack.jpg}}
+    \caption{All the components of the Cesium library.}
+\end{figure}
+
+Thus, as it is possible to see from Figure \ref{img:cesium_stack},
+the Renderer is just a portion of the Scene
+component that is the ``real'' 3D terrain and imagery engine.
+Finally, as it is possible to see from Figure \ref{img:cesium_pipeline},
+Cesium has a classic animate/update/render pipeline.
+\begin{figure}[!htb]\label{img:cesium_pipeline}
+    \center{\includegraphics[width=0.6\linewidth]{cesium_pipeline.jpg}}
+    \caption{The internal pipeline used in the Cesium framework.}
+\end{figure}
+
+The \emph{animate} step involves all the aspects of building each object that is
+later rendered (eg. texture, material properties etc) without interacting with
+WebGL. The \emph{update} step allocated and updates all the resources needed by
+WebGL using the JavaScript objects. Eventually, the \emph{renderer} phase actually
+issues the draw calls. All the available APIs offered by Cesium can be found
+in~\cite{cesiumapi}.
+
 
 
 \section{Goole Chrome's architechture}

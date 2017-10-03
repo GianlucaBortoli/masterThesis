@@ -55,12 +55,15 @@ in order to describe computation times that are not following the i.i.d.
 assumption.
 
 Another very important concept is the worst-case execution time (WCET).
-It represents the maximum fraction of CPU time spent to execute a task
+It represents the upper bound for the fraction of CPU time spent to execute a task
 \( \tau_{i} \) and it can be computed using the following equation:
 \begin{equation}\label{eq:wcet}
     W_{i} = \ceil[\bigg]{\frac{c_{i,\,j}}{T_{i}}}
 \end{equation}
 
+Computing the WCET value may involve statistical testing~\cite{bernat2002wcet}
+and, in some case, also formal verification~\cite{souyris2009formal} of the
+software under test.
 Moreover, the total system utilization \( W_{tot} \) can be easily derived from
 Equation \ref{eq:wcet} as:
 \begin{equation}\label{eq:system_utilization}
@@ -170,13 +173,24 @@ task on its own, making its life much easier.
 
 
 \section{Hard vs. soft real-time}
-As previously mentioned in Section \ref{sec:task_model}, there exist two different
-notions of real-time.
+First of all, real time processing should not be confused with ``fast''. The notion
+of speed highly depends on the specific application. Real time systems focus on
+giving deterministic and precictable response times, quantifying the worst-case
+scenario and being prepared to handle it properly.
 
+As previously mentioned in Section \ref{sec:task_model}, there exist two different
+notions of real-time.\\
 In hard real-time systems every deadline must be respected, meaning
 that even a single dealine miss implies a system failure. This is the case, for
 example, of some medical applications like pacemakers and some avionics systems
-where many people's lives are in danger if such systems fail.\\
+where many people's lives are in danger if such systems fail. To achieve such
+reliability, enhenced real-time OS kernels have to be used, since they are proved
+to guarantee a 100\% precision on the WCET value. Even a 99,9\% precision is not
+enough in this case. ``Safety-critical'' systems is a concept that often goes
+together with the one of hard real-time, where strict temporal guarantees are
+mixed with functional safety concepts in the industry sector. A trivial but clear
+example is that nobody wants a segmentation fault in a car braking system while
+it is being used.\\
 On the other hand, the requirements for soft real-time systems are looser. This
 means that it is acceptable to miss some deadline.
 This is what happens in straming video players for example, where missing the
