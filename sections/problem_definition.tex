@@ -1,4 +1,35 @@
 %!TEX root=../thesis.tex
 \chapter{Problem definition} \label{cha:problem_definition}
 
-Problem definition
+When developers write applications inside a web browser, they want them to run
+as smooth as possible. Making sure they not suffer of performance problems really
+makes the difference between a native-like feeling and a cluncky experience.
+If these performance issues are not hard enough to achieve, real-time software
+inside a web page is even more challenging. Hence, being able to state whether
+web technologies are good enough to fit in the soft real-time field is still a
+huge and open question. Nobody has applied real-time theory concepts to web
+technologies before in the computer science literature. This work aims to find
+an answer to this question.
+
+From an high-level point of view it is possible to say that there are a lot of
+layers responsible for displaying something from a web page to the screen.
+During this work there are two main issues that have to be solved in order to
+give an answer to the question:
+\begin{itemize}
+    \item discovering which are all the components involved in the graphics
+        pipeline and stating which portion of the system is responsible for a
+        certain job.
+    \item measuring time to give a concrete representation of the latencies
+        introduced by every layer of abstraction.
+\end{itemize}
+
+Once these two points are solved, it is possible to describe the timings by means
+of real-time mathematical models and saying if an application is ``fast enough''
+for the specific purpose of the application.
+
+This thesis is relevant for its novel approach to soft real-time, studying
+if web technologies can fit into a field which is mainly composed of computer
+programs written in low-level programming languages like C~\cite{kernighan2006c}
+and C++~\cite{stroustrup1995c++} due to the high-demanding time constraints.
+As previously mentioned in Chapter \ref{cha:intro}, the feasibility study this
+been accomplished using the 3D navigator application.
