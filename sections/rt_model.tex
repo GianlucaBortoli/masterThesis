@@ -1,44 +1,108 @@
 %!TEX root=../thesis.tex
 \chapter{A Real-Time model for WebGL} \label{cha:rt_model}
 
+WebGL is a relatively new technology that enables hardware-accelerated web
+contents. Moreover, in the last few years Virtual Reality (VR) has became
+another very popular research topic. The Mozilla Foundation is actively working
+for porting VR technologies to the Web my means of WebVR~\cite{mozvr}. WebVR is
+``an open specification that makes it possible to experience VR'' inside a web
+browser, whose main goal is to make VR experiences easier regardless of the
+device used. This specification~\cite{webvrspecs} is made available to developers
+through different frameworks such as Mozilla's A-Frame~\cite{aframe}, which allows
+to build virtual reality scenes inside the browser using only HTML and JavaScript
+code. This may seem a very different approach with respect to the one of this
+thesis, but what makes A-Frame similar to Cesium is how they exploit WebGL to
+interact with the GPU to achieve hardware acceleration. In this sense it is
+reasonable to compare VR and 3D map web technologies since they both use WebGL
+as its core part. Furthermore, virtual reality applications are even more
+performance-demanding, since large latencies jeopardize the entire user
+experience.
+
+
+\section{Assumptions}
+First of all, all the experiments presented in this thesis are run on a Dell
+Inspiron 15R 5521 notebook\footnote{\url{http://www.dell.com/us/dfh/p/inspiron-15r-5521/pd}.},
+whose hardware specifications are shown in Table \ref{tab:notebook_specs}.
+Since graphics performances highly depends on the GPU available to the system,
+the results presented in Chapter \ref{cha:experiments} are likely to be overtaken
+if better graphics hardware (eg. a dedicated GPU) is installed.
 \begin{table}[!htb]
     \centering
     \caption{The test machine hardware specifications.}
     \label{tab:notebook_specs}
     \begin{tabular}{|l|l|l|l|}
     \hline
-    \multicolumn{1}{|l|}{\textbf{CPU}} & \multicolumn{1}{l|}{\textbf{GPU}} & \multicolumn{1}{l|}{\textbf{RAM}} & \multicolumn{1}{l|}{\textbf{Hard drive}} \\ \hline
+    \multicolumn{1}{|l|}{\textbf{CPU}} & \multicolumn{1}{l|}{\textbf{GPU (integrated)}} & \multicolumn{1}{l|}{\textbf{RAM}} & \multicolumn{1}{l|}{\textbf{Hard drive}} \\ \hline
     Intel i7 3537U & Intel® HD Graphics 4000 & 8GB DDR3 & Samsung 850 Evo 250GB \\ \hline
     \end{tabular}
 \end{table}
 
-\begin{table}[!htb]
-    \centering
-    \caption{WebGL functions-to-groups mapping.}
-    \label{tab:webgl_func_mapping}
-    \begin{tabular}{|l|l|l|}
-        \hline
-        \textbf{Initialization} & \textbf{Modify data} & \textbf{Display} \\ \hline
-        bindBuffer/bindFramebuffer & uniformMatrix3fv/uniformMatrix4fv & drawElements \\
-        enable/disable & uniform[1\(\vert\)2\(\vert\)3\(\vert\)4][f\(\vert\)i\(\vert\)iv\(\vert\)fv] & drawArray \\
-        viewport & bindTexture/activeTexture &  \\
-        clear/clearColor & bufferSubData &  \\
-        cullFace &  &  \\
-        depthCompare &  &  \\
-        useProgram &  &  \\
-        colorMask &  &  \\
-        \hline
-    \end{tabular}
-\end{table}
+Another important aspect is how tests are conceived. As it is always the case in
+real-time analysis, the worst possible scenario is the interesting one for
+computing the WCET of a task. To achieve this situation using the test application,
+Google Chrome is always run from scratch with only one active tab. Moreover, the browser
+is forced not to cache any part of the application code but, at the same time, it
+is essential to get rid of the map tils' retrival time. Usually map tiles are
+downloaded via HTTP using the REST APIs a terrain server exposes to the clients.
+Even the time the navigator takes to download a small portion of the terrain
+can be orders of magniture bigger than all the rest of the response time.
+Hence, this particular task is obtained allowing the browser to save locally the
+tiles downloaded during a ``warm-up'' phase. This allows to significantly lower
+the map retrival time during the ``real'' experiment that is later discarded from
+the trace.
 
-\begin{lstlisting}[caption=Test code caption, language=JavaScript]
-    function test(foo, bar) {
-        console.log(`foo=${foo}, bar=${bar}`);
-    }
+Finally, picking timestamps during the execution of a piece of software can bias
+the correctness of the timings themselves. This is another point that has to be
+taken into account during any type of analysis involving time measurements like
+the one presented in this work. In simple terms, measuring time takes time.
+
+
+\section{Tools used}
+This section presents the tools used to trace function calls and to pick the needed
+timings in the experiments (see Chapter \ref{cha:experiments}).
+
+\subsection{Web Tracing Framework}
+The Web Tracing Framwork~\cite{wtf} (WTF) is composed of a set of tools for
+instrumenting, analyzing and visualizing web application execution traces.
+It is an extensible framework able to capture and replay HTML5 canvas elements
+with its WebGL content. In this way it is possible to implement a plugin for WTF
+for the specific purpost of the application under test. Furthermore, a wide set
+of methods and events can be tracked out-of-the-box for preliminar investigations.
+
+WTF is a very good toolset for an high-level analysis of web applications,
+providing easy code instrumentation to track only what is truly interesting.
+The usual work-flow is the following. First, the developer either selects the events
+to be traced from a predefined set or he/she implements its own specific code
+instrumentation with the available APIs. After that, the application's source code
+has to include three function calls to prepare, start and stop tracing.
+An example of application source code is the following:
+\begin{lstlisting}[caption=Usage example of the Web Tracing Framework., language=JavaScript,
+    label=code:wtf_example]
+    let wtfOptions = { ... }; // customize WTF behaviour
+    wtf.trace.prepare(wtfOptions);
+    /* application initialization */
+    wtf.trace.start(); // start profiling
+    /* code to be traced goes here */
+    wtf.trace.snapshot("file://trace"); // save trace to file
+    wtf.trace.stop(); // stop profiling
 \end{lstlisting}
 
-\begin{figure}[!htb]
-    \center{\includegraphics[width=0.6\linewidth]{call_arrival.png}}
-    \caption{The function calls arrival approximate model with different groups.}
-    \label{img:call_arrival}
-\end{figure}
+After taking a snapshot of the current trace (line 6) and WTF is stopped (line 7,
+code snippet \ref{code:wtf_example}), the trace is exported in a
+compressed format that can be manipulated using some CLI
+scripts\footnote{\url{https://github.com/google/tracing-framework}.} to export
+data in CSV format or it can be visualized inside a web
+page\footnote{\url{http://google.github.io/tracing-framework/bin/app/maindisplay.html}.}.
+
+Another highlight is its extendibility. In this way, the developer can either
+profile the application using events emitted by the browser by default or the
+source code can be instrumented to track very specific parts. Basically, this
+allows to measure nearly everything that is accessible from JavaScript, even
+though it may not be enough in some situation.
+
+
+
+\subsection{Chrome's trace event profiler}
+
+
+

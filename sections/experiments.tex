@@ -1,4 +1,28 @@
 %!TEX root=../thesis.tex
 \chapter{Experiments} \label{cha:experiments}
 
-Experiments
+
+\begin{table}[!htb]
+    \centering
+    \caption{WebGL functions-to-groups mapping.}
+    \label{tab:webgl_func_mapping}
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Initialization} & \textbf{Modify data} & \textbf{Display} \\ \hline
+        bindBuffer/bindFramebuffer & uniformMatrix3fv/uniformMatrix4fv & drawElements \\
+        enable/disable & uniform[1\(\vert\)2\(\vert\)3\(\vert\)4][f\(\vert\)i\(\vert\)iv\(\vert\)fv] & drawArray \\
+        viewport & bindTexture/activeTexture &  \\
+        clear/clearColor & bufferSubData &  \\
+        cullFace &  &  \\
+        depthCompare &  &  \\
+        useProgram &  &  \\
+        colorMask &  &  \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{figure}[!htb]
+    \center{\includegraphics[width=0.6\linewidth]{call_arrival.png}}
+    \caption{The function calls arrival approximate model with different groups.}
+    \label{img:call_arrival}
+\end{figure}
