@@ -21,7 +21,7 @@ small latencies (ie. in the order of tenths of milliseconds) can make a product
 completely unusable and annoy the human eyesight.
 
 
-\section{Assumptions}
+\section{Assumptions} \label{sec:assumptions}
 First of all, all the experiments presented in this thesis are run on a Dell
 Inspiron 15R 5521 notebook\footnote{\url{http://www.dell.com/us/dfh/p/inspiron-15r-5521/pd}.},
 whose hardware specifications are shown in Table \ref{tab:notebook_specs}.
@@ -67,7 +67,7 @@ the timings needed for the experiments shown in Chapter \ref{cha:experiments}.
 Even though the description reflects the specific usage in this work, these
 software toolkits can be applied to a wide variety of fields and scenarios.
 
-\subsection{Web Tracing Framework}
+\subsection{Web Tracing Framework} \label{sec:wtf}
 The Web Tracing Framwork (WTF)~\cite{wtf} is composed of a set of tools for
 instrumenting, analyzing and visualizing web application execution traces.
 It is an extensible framework able to capture and to replay HTML5 canvas elements
@@ -218,7 +218,7 @@ are the \emph{ts} and the \emph{tdur}; they allow to specify when an event has b
 fired and for how much time the thread computing that function run.
 
 
-\section{Profiling and analysis procedures}
+\section{Profiling and analysis procedures} \label{sec:procedure}
 Some extra work has been done to provide a very convenient way
 for capturing data with the tool presented in the previous section. A program
 simulating the FriWalk hardware has been developed to send the values for position
