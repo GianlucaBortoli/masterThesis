@@ -185,16 +185,18 @@ In hard real-time systems every deadline must be respected, meaning
 that even a single dealine miss implies a system failure. This is the case, for
 example, of some medical applications like pacemakers and some avionics systems
 where many people's lives are in danger if such systems fail. To achieve such
-reliability, enhenced real-time OS kernels have to be used, since they are proved
+reliability, enhanced real-time OS kernels have to be used, since they are proved
 to guarantee a 100\% precision on the WCET value. Even a 99,9\% precision is not
 enough in this case. ``Safety-critical'' systems is a concept that often goes
 together with the one of hard real-time, where strict temporal guarantees are
 mixed with functional safety concepts in the industry sector. A trivial but clear
 example is that nobody wants a segmentation fault in a car braking system while
 it is being used.\\
+%Sono un po' perplesso sull'esempio, non parlerei di segmentation fault, 
+%ma più che altro di errore hardware di un sensore
 On the other hand, the requirements for soft real-time systems are looser. This
 means that it is acceptable to miss some deadline.
-This is what happens in straming video players for example, where missing the
+This is what happens in streaming video players for example, where missing the
 deadline for some frame may not even noticed by the user. Clearly, if too many
 frames are not displayed on the screen the streaming cannot be enjoyed by the
 user in any way. Another notheworthy aspect is that if a soft real-time system

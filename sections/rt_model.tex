@@ -1,4 +1,4 @@
-%!TEX root=../thesis.tex
+﻿%!TEX root=../thesis.tex
 \chapter{A Real-Time model for WebGL} \label{cha:rt_model}
 
 WebGL is a relatively new technology that enables hardware-accelerated web
@@ -53,6 +53,10 @@ Hence, this objective is obtained allowing the browser to locally save the
 tiles downloaded during a ``warm-up'' phase. This allows to significantly lower
 the map retrival time during the ``real'' experiment without jeopardizing the
 timings of the entire trace.
+
+%TODO Metterei anche una frase indicando che il browser era l'unico processo eseguito nel sistema
+%ed essendo il sistema completamente scarico anche aumentando la priorità dei processi del browser 
+%non cambiano i risultati dei test
 
 Finally, picking timestamps during the execution of a piece of software can bias
 the correctness of the data. This is another point that has to be
