@@ -52,11 +52,10 @@ can be orders of magniture bigger than all the rest of the response/computation 
 Hence, this objective is obtained allowing the browser to locally save the
 tiles downloaded during a ``warm-up'' phase. This allows to significantly lower
 the map retrival time during the ``real'' experiment without jeopardizing the
-timings of the entire trace.
-
-%TODO Metterei anche una frase indicando che il browser era l'unico processo eseguito nel sistema
-%ed essendo il sistema completamente scarico anche aumentando la priorità dei processi del browser 
-%non cambiano i risultati dei test
+timings of the entire trace. Furthermore, the browser was the only task executed
+on the system during the tests. Being the system completely unloaded, increasing
+the priority associated to the processes/threads of the browser would not improve
+the results of the tests.
 
 Finally, picking timestamps during the execution of a piece of software can bias
 the correctness of the data. This is another point that has to be
