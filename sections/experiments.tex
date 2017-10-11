@@ -5,7 +5,7 @@ This chapter outlines all the methodologies used to analyze the test application
 and it provides a discussion of the outcomes.
 
 
-\section{First measurements}
+\section{First measurements}\label{sec:first_measurements}
 The first step to outline the behaviour of the test application is to include
 the the Web Tracing Framework library and to place
 the proper functions as shown in Listing \ref{code:wtf_example}.
@@ -113,9 +113,10 @@ further. Since the WTF is able to measure only the response times of the applica
 with a precision of \(\pm 0.5\,ms\), the bar chart shown in Figure
 \ref{img:no_map_example} displays a composite value on the Y axis. The response
 time can be computed as follows:
-\begin{equation*}
+\begin{equation}
     response\_time = computation\_time + interference
-\end{equation*}
+    \label{eq:response_time}
+\end{equation}
 
 The \emph{interference} component is clearly due to the huge operating system
 stack lying between the JavaScript code, running inside the
@@ -160,6 +161,44 @@ parts. This can be summarized as shown in Figure \ref{img:call_arrival}.
 
 
 \section{A fine-grained model}
+Some other approach is needed to get better insights with respect to the ones
+presented in the previous chapter. The first issue to be adressed is that the
+WTF framework is able to retrieve only response times (see Equation
+\ref{eq:response_time}). Usually real-time models deal with computation times
+rather than response ones. Hence, the problem of measuring exact computation
+times without the interference coming from other tasks becomes a strict requirement.
+Another important aspect is the resolution of the timings. As stated in Section
+\ref{sec:first_measurements}, the WTF framwork is able to extract times with a
+0.5 milliseconds precision and this is clearly not enough for applying any of
+the real-time mathematical models.
+Last but not least, a more fine-grained view of the function calls involved in
+the rendering process is needed. Furthermore, this allows to focus only on the
+``\emph{display/draw}'' group presented in Table \ref{tab:webgl_func_mapping}
+without restricting the analysis only to the \emph{drawElements} and
+\emph{drawArrays} functions found by the web tracing framework.
+
+It immediately become clear that the tool presented in Section \ref{sec:first_measurements}
+is not powerful enough to recognize what is happening inside the browser internals.
+The tool that perfectly fits these requirements is the Trace Event Profiling
+Tool~\cite{eventprofilertool} embedded into the Chrome web browser.\\
+It allows to capture computation times (and not only response times) of multiple
+events including the ones fired by the GPU process. Being able to distinguish
+the \emph{computation\_time} from the \emph{interference} component is the key
+that permits to apply mathematical models that would not be possible otherwise.
+The profiler enables to captures the ``duration events'' of the commands received by the GPU
+process from a server-side point of view (and not from the renderer client perspective).
+Moreover it achieves more precise timings with a resolution of \(\pm 1\,\mu s\),
+which is three orders of magniture greater than the one of WTF.
+Finally, this event tracing tool is able to precisely trace which are the function
+being called inside the Chrome's C++ code and to identify the object's class
+calling that method. Therefore, it is possible to say that it is able to balance
+the defects of the web tracing framework.
+
+The grouped bar chart displayed in Figure \ref{img:no_map_groups} helped to
+get an idea about the wheight each group has inside the entire response time.
+Since this thesis aims at modelling the rendering pipeline of WebGL from a real-time
+point of view, the focus is put only to the \emph{display} group.
+
 
 
 \section{The mathematical model}
