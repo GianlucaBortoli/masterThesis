@@ -152,7 +152,6 @@ over time, depending on the complexity of the scene to be rendered.
 This analysis using the WTF allows to discover an approximate task model, where
 each job of the rendering task can be divided into three logically different
 parts. This can be summarized as shown in Figure \ref{img:call_arrival}.
-
 \begin{figure}[!htb]
     \center{\includegraphics[width=0.6\linewidth]{call_arrival.png}}
     \caption{The function calls arrival approximate model with the different groups.}
@@ -199,7 +198,70 @@ get an idea about the wheight each group has inside the entire response time.
 Since this thesis aims at modelling the rendering pipeline of WebGL from a real-time
 point of view, the focus is put only to the \emph{display} group.
 
+The Trace Event Profiling Tool is designed to diagnose performance problems,
+allowing the developers to understand what the browser is doing ``under the hood''.
+Due to the milti-process nature of Chrome, this toolkit must be able to record
+the activity of each Chrome's process and the proper method signatures (both from the C++
+core and the client's JavaScript). This process results in a huge amount of
+information, which can be visually inspected with a graphical interface or it
+can be exported in JSON format for later automatic analysis.
+
+Another important aspect is how to use this tool in practice. The normal use case
+works as follows. First, open a new tab for the tool typing \url{about://tracing}.
+Next, click the ``record'' button to select only the events of interest and to
+start capturing the trace. After that, switch to the tab with the target content
+to be debugged and perform each operation needed to reproduce the bug or to trigger
+the code behaving incorrectly. Once the operation ends, switch back to the profiler
+tab, click the ``stop'' button and wait until the tool extracts all the needed
+information to build the GUI. Finally, the trace can be either inspected directly
+from the tool's interface (see Figure \ref{img:chrome_profiler}) or it can be
+exported to a JSON file via the ``save'' button.
+\begin{figure}[!htb]
+    \center{\includegraphics[width=0.65\linewidth]{chrome_profiler_screenshot.png}}
+    \caption{A trace inspection using the Trace Event Profiling Tool interface.}
+    \label{img:chrome_profiler}
+\end{figure}
+
+Sometimes, it can be necessary to run Chrome with some specific command
+line parameters for enabling specific benchmarking options that would not be
+enabled by default\footnote{These special command line options allow to trace
+events that would not be fired otherwise, since the vast majority of Chrome's
+users do not need them and they prefer a smoother navigation experience.}.
+For example, the \emph{-{}-enable-skia-benchmarking} flag is needed to enable the
+code instrumentation for the Skia graphics engine of the browser, which allows
+the tracing profiler tool to capture also the events created by that specific
+component of the web browser.
 
 
-\section{The mathematical model}
+\subsection{Trace capturing}
+Among all the information about the Event Trace Profiling tool itself, it is
+also important to understand the scenario where the traces analyzed in Section
+\ref{sec:math_model} are captured.
+The traces explained in~\cite{frias2017probabilistic} represent the computation
+times of a lane detection algorithm~\cite{fontanelli2014vision} the a robot uses
+to determine its position with respect to a line markers arranged on the floor.
+More specifically, it takes an image as input and it outputs is ``the distance
+of the center of the vehicle from the line and the angle between the longitudinal
+axis of the car and the line''. Such algorithm samples the \emph{relevant elements}
+from the frame in order to detect the line and to output the result. It follows
+that the so called relevant elements are now always the same throughout all the
+images captured by the camera.
+
+In order to mimic this random component in the test application presented in this
+thesis, the starting point of the navigation (ie. latitude and longitude) and
+the rotation of the camera are taken randomly at each run.
+This means that it is not possible to know in advanche the path followed on the
+map, which ensures the unpredictability of the computation times of the WebGL
+rendering pipeline.
+
+Furthermore, among all the information provided by the trace captured using
+Chrome's Event Trace Profiling Tool, only data concerning the GPU process is
+extracted. This allows to retrieve not only the timestamps of the events (ie.
+response times), but also the more relevant duration of complete events inside
+the \emph{tdur} field. This value specifies the thread clock duration of complete
+events in microseconds, which corresponds to computation times.
+
+
+
+\section{The mathematical model}\label{sec:math_model}
 
