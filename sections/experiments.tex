@@ -275,4 +275,42 @@ events in microseconds, which corresponds to the computation times.
 
 
 \section{The mathematical model}\label{sec:math_model}
+Generally speacking, a real-time task \(\tau_{i}\) is composed of multiple jobs
+\(J_{i,\,j}\) which activate at time \(r_{i,\,j}\), finish at time \(f_{i,\,j}\)
+and compute for an amount of time \(c_{i,\,j}\). The real-time models in the
+literature the computation time \(c_{i\,j}\) as an i.i.d. stochastic process \(C\).
+On the contrary, the model presented in~\cite{frias2017probabilistic} is not
+based on this tightening assumption. In addition, probabilistic
+deadlines~\cite{abeni1999qos} are used instead of the normal hard ones.
+This approach to real-time modeling techniques has been developed because the
+computation times studied by Fr\'{i}as et at. in~\cite{frias2017probabilistic}
+are strongly correlated with the previous ones and do not respect the i.i.d.
+assumption. Another notheworthy aspect of these computation times is that they
+are random even for multiple executions of the same task on the same input data.
+Moreover, the lane algorithm presents a ``switching behaviour'', since computation
+times can change considerably depending on the scene taken as input.
 
+Hence, this scenario does not allow to describe all the computation times with
+a unique probability distribution but, at the same time, it has to be described
+using some stochastic process. This is what the \emph{Markov Computation Time Model}
+(MCTM) aims to solve.
+The MCTM model works as follows. The switching behaviour of the computation
+times stated above can be described as a system with a finite number of states
+(\emph{N}). The computation time samples belonging to each state are represented
+by a random process, which can be further described with its probability
+distribution if the random process withstand to the i.i.d. assumption.
+Moreover, if the transitions between the \emph{N} modes can be defined as a Markov
+process, the model just presented is a particular type of non i.i.d. processes
+named \emph{Markov Modulated Process} (MMP)~\cite{fischer1993markov}.
+More precisely it is an Hidden Markov Model (HMM)~\cite{eddy1996hidden}, since
+the only observable part is the output of each state (ie. the computation times)
+and not the states themselves.
+
+More formally, the MCTM is defined as a triple \(\{M,\,P,\,C\}\) where:
+\begin{itemize}
+    \item \( M = \{ m_1,\,\dots,\,m_N \} \) is the set of modes.
+    \item \( P = (p_{a,\,b}) \) is the mode transition matrix, where
+        \(a \in M\) and \(b \in M\).
+    \item \( C = \{ C_{m_j} : m_j \in M \} \) is the set of probability
+        distributions of the computation times for each mode.
+\end{itemize}
