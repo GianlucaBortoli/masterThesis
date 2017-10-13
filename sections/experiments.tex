@@ -225,7 +225,7 @@ information to build the GUI. Finally, the trace can be either inspected directl
 from the tool's web interface (see Figure \ref{img:chrome_profiler}) or it can be
 exported to a JSON file via the ``save'' button.
 \begin{figure}[!htb]
-    \center{\includegraphics[width=0.65\linewidth]{chrome_profiler_screenshot.png}}
+    \center{\includegraphics[width=0.68\linewidth]{chrome_profiler_screenshot.png}}
     \caption{A trace inspection using the Trace Event Profiling Tool interface.}
     \label{img:chrome_profiler}
 \end{figure}
@@ -351,6 +351,30 @@ It is a completely different type of application with respect to the one
 inspiring the Markov Computation Time Model but, at the same time, it does not
 withstand the usual i.i.d. assumption. Therefore it is a good match for
 testing the model on a completely different field like that of web technologies.
+
+In order to run this analysis also on the navigator application, the Trace Event
+Profiling Tool presented in Section \ref{sec:chrome_trace_event_prof} is used
+to capture the sequence of the computation times. 25 traces composed of 15000
+samples each are extracted from the raw data outputted by the profiler and,
+consequently, they are employed for three different purposes as follows:
+\begin{enumerate}
+    \item 10 are used to run the simulator of the resource-reservation
+        scheduling algorithm.
+    \item 10 are used for the MCTM model. To be more precise, 4 are used as
+        training set for computing the parameters of the model (HMM learning
+        problem), while the other 6 are used as test set (HMM decoding problem).
+    \item 5 are used to compute an i.i.d. approximation of the computation time,
+        treating the traces as if they follow this constraint.
+\end{enumerate}
+
+Moreover, another set of 25 traces are computed starting from the previous ones
+summing the computation times belonging to the same frame. Basically it allows
+to obtain the computation time needed for the generation of every single frame
+instead of using the ``raw'' data of all the function calls separately.
+This additional approach allows to study the WebGL rendering performance not
+only from a broad perspective, but also on a per-frame basis. Finally a comparison
+between the two is made.
+
 
 \subsection{Results}
 
