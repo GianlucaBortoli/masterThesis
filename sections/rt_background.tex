@@ -137,9 +137,10 @@ Some of the most famous scheduling algorithms in the computer science literature
 are Rate Monotonic (RM)~\cite{lehoczky1989rate}, Deadline Monotonic
 (DM)~\cite{audsley1991hard} and Earliest Deadline First (EDF)~\cite{jansen2003lightweight}.
 Another well known approach is the so called \emph{sched\_deadline}~\cite{lelli2016deadline}
-algorithm, which is used in the Linux kernel as default scheduling algorithm from
+algorithm, which is available in the Linux kernel as scheduling algorithm from
 the 3.14 version.
-
+%TODO sched_deadline e' stato inserito nella mainline nella versione 3.14, ma
+% non ancora come default
 
 \section{Resource Reservation scheduling}
 As stated in Section \ref{sec:scheduler}, modern multi-core CPUs allow multiple
@@ -176,7 +177,7 @@ task on its own, making its life much easier.
 \section{Hard vs. soft real-time}
 First of all, real time processing should not be confused with ``fast''. The notion
 of speed highly depends on the specific application. Real time systems focus on
-giving deterministic and precictable response times, quantifying the worst-case
+giving deterministic and predictable response times, quantifying the worst-case
 scenario and being prepared to handle it properly.
 
 As previously mentioned in Section \ref{sec:task_model}, there exist two different
