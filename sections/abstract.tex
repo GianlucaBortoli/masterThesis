@@ -1,34 +1,32 @@
 %!TEX root=../thesis.tex
-\chapter*{Abstract} \label{abstract} % senza numerazione
-\addcontentsline{toc}{chapter}{Abstract} % da aggiungere comunque all'indice
+\chapter*{Abstract} \label{abstract} % no numbering
+\addcontentsline{toc}{chapter}{Abstract} % add to index anyway
 
-Recent surveys report that web technologies are very popular not only among
-website developers but also to build graphical user interfaces for corporate software.
-This trend sees WebGL as one of its main actors, thanks to its ability to create
-3D-capable applications exploiting hardware acceleration. For this reason, WebGL
-is becoming the ``de facto'' standard API for 3D graphics in web applications and
-it is currently supported by all the major browsers.
+The purpose of this work is to verify if it is feasible to embed a 3D navigator
+inside the FriWalk's system architecture. This application is developed using
+WebGL, the ``de facto'' standard for 3D hardware-accelerated graphics in
+web applications. Therefore it is essential to understand if such technology
+is appropriate for building user interfaces in the real-time field, where
+providing temporal guarantees on the response time is a mandatory constraint.
+As far as we know, at the time of writing there is still no science literature
+applying real-time models to web technologies.
 %
-Given that this approach to 3D graphics is widely employed, a measure for its
-real performance is needed. To achieve this, precise calculations of the response
-and the computation times of the different layers belonging to the rendering
-pipeline have to be collected.
-In addition, another goal of this thesis is to investigate if WebGL is able to
-respect real-time temporal constraints. As far as we know, at the time of writing
-there is still no science literature applying real-time models to web technologies.
+This work analyzes in detail all the layers which are part of the WebGL
+rendering pipeline and it provides exact measurements for the computation time
+of every single rendering task.
+This performance assessment phase is accomplished using two ad-hoc tools: the
+Web Tracing Framework and Chrome's Event Profiling Tool.
+The first is used for the very first investigations of the response time and to
+get insights of what is happening from an high level point of view.
+On the other hand, the profiler included inside the Chrome browser is able to
+capture exact computation times of the rendering primitives with microsecond
+granularity.
 %
-The application under test is a desktop 3D map navigator specifically built for
-a robotic walking assistant. Moreover, the performance measurement phase is
-accomplished using two ad-hoc tools: the Web Tracing Framework and Chrome's
-Event Profiling Tool. The first is used for the very first investigations of the
-response time and to get insights of what is happening from an high level point
-of view. On the other hand, the profiler embedded inside the Chrome browser is
-able to capture exact computation times of the rendering primitives with
-microsecond granularity. This advanced profiler allows to overtake the limits
-of the other framework, namely the inability to retrieve computation times
-instead of just response times and the level of detail that was clearly not
-enough for applying any real-time mathematical model.
-
-% TODO:
-% * results and their significance
-% * future research
+Such precision is essential for applying real-time mathematical models which
+define probabilistic deadlines and that are able to predict the trend of the
+entire system.
+%
+The experimental results show that WebGL is able to achieve quite good results.
+This is remarkable especially if we consider that the test application is
+developed using a very high-level programming language and that it runs inside
+a browser, which is rather singular for real-time programs. 
