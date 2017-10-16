@@ -18,15 +18,18 @@ This performance assessment phase is accomplished using two ad-hoc tools: the
 Web Tracing Framework and Chrome's Event Profiling Tool.
 The first is used for the very first investigations of the response time and to
 get insights of what is happening from an high level point of view.
-On the other hand, the profiler included inside the Chrome browser is able to
-capture exact computation times of the rendering primitives with microsecond
-granularity.
+On the other hand, the profiler included inside the Google Chrome browser is
+able to capture exact computation times of the rendering primitives with microsecond
+granularity. Hence, this approach starts from the ``macro'' situation and it
+proceeds focusing on very detiled rendering primitives.
 %
-Such precision is essential for applying real-time mathematical models which
-define probabilistic deadlines and that are able to predict the trend of the
-entire system.
+Capturing very precise timing values is essential for applying real-time
+mathematical models which are able to define probabilistic deadlines and to predict
+the trend of the entire system.
 %
-The experimental results show that WebGL is able to achieve quite good results.
-This is remarkable especially if we consider that the test application is
+The experimental results show that WebGL is able to achieve good performances
+and that its rendering pipeline can be modeled using a Markov Computation Time
+Model.
+This goal is remarkable especially if we consider that the test application is
 developed using a very high-level programming language and that it runs inside
-a browser, which is rather singular for real-time programs. 
+a browser, which is rather singular for real-time programs.
