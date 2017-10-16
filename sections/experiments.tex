@@ -375,14 +375,65 @@ consequently, they are employed for three different purposes as follows:
         treating the traces as if they follow this constraint.
 \end{enumerate}
 
-Moreover, another set of 25 traces are computed starting from the previous ones
-summing the computation times belonging to the same frame. Basically it allows
-to obtain the computation time needed for the generation of every single frame
-instead of using the ``raw'' data of all the function calls separately.
-This additional approach allows to study the WebGL rendering performance not
-only from a broad perspective, but also on a per-frame basis. Finally a comparison
-between the two is made.
 
+\subsection{Results}\label{sec:mctm_results}
+The algorithm solving the HMM learning problem is run multiple times in order to
+find the parameters that best fit the Markov Computation Time Model.
+As it is possible to see from Figure \ref{img:mctm_2_states}, the autocorrelation
+functions computed using the MCTM composed of 2 states suggest that they are
+uncorrelated, even though the first part of the curve shows quite high values.
+Moreover, the Cumulative Distribution Function (CDF) is an index of how computation
+times are spread across the sequence and it displays a neat distinction between
+the two modes inside the MCTM.
+\begin{figure}[!htb]
+    \center{\includegraphics[width=0.75\linewidth]{mctm_2_states.png}}
+    \caption{CDF (above) and autocorrelation functions obtained from two
+        different modes (below).}
+    \label{img:mctm_2_states}
+\end{figure}
 
-\subsection{Results}
+This means that the original trace is split into two different parts, which
+are identified by the procedure implementing the HMM decoding step. The algorithm
+behind this classification phase is good enough for extracting two fairly
+uncorrelated sub-sequences, but they did not pass an independence test.
+Furthermore, if we consider the model with 3 states presented in Figure
+\ref{img:mctm_3_states}, it is possible to notice how the CDFs belonging to state
+2 and 3 are almost perfectly overlapped. This situation suggests that these two
+modes should be collapsed into a single one, since the distribution of the
+computation times is nearly identical. In addition, even their autocorrelation
+values do not improve much.
+\begin{figure}[!htb]
+    \center{\includegraphics[width=0.75\linewidth]{mctm_3_states.png}}
+    \caption{CDF (above) and autocorrelation functions obtained from three
+        different modes (below).}
+    \label{img:mctm_3_states}
+\end{figure}
 
+As a last step, the probability of respecting the deadlines is studied using the
+PROSIT~\cite{palopoli2014tool} tool. Given the scheduling parameters and the
+sequence of computation times for the task, this tool is able to provide easy
+access to probabilistic analysis of soft real-time systems. PROSIT is applied using
+the following parameters:
+\begin{itemize}
+    \item the computation time sequence extracted as discussed in Section
+        \ref{sec:chrome_trace_event_prof}
+    \item task period \( T_i = 60\,ms \)
+    \item reservation period \( T_{i}^s = 20\,ms \)
+    \item budget \( Q_{i}^s = 2\,ms \)
+\end{itemize}
+
+\begin{figure}[!htb]
+    \center{\includegraphics[width=0.7\linewidth]{respect_deadline_comparison.pdf}}
+    \caption{Probability of respecting the deadline for the different methods.}
+    \label{img:deadline_comparison}
+\end{figure}
+
+As it is possible to see from Figure \ref{img:deadline_comparison}, the i.i.d.
+approximation (dark red solid line) overestimates the probability of respecting
+the deadline that is computed using the PROSIT tool (light blue solid line).
+
+Moreover, none of the models found by the HMM learner/decoder algorithms is able
+to classify the computation times in a way that makes the model's behaviour very
+close to the simulation. However, the MCTM with two modes is always conservative
+with respect to the simulation, meaning that it provides stricter guarantees and
+that it can be used in practice to design a real-time system.
