@@ -137,10 +137,9 @@ Some of the most famous scheduling algorithms in the computer science literature
 are Rate Monotonic (RM)~\cite{lehoczky1989rate}, Deadline Monotonic
 (DM)~\cite{audsley1991hard} and Earliest Deadline First (EDF)~\cite{jansen2003lightweight}.
 Another well known approach is the so called \emph{sched\_deadline}~\cite{lelli2016deadline}
-algorithm, which is available in the Linux kernel as scheduling algorithm from
-the 3.14 version.
-%TODO sched_deadline e' stato inserito nella mainline nella versione 3.14, ma
-% non ancora come default
+algorithm, which is available in the mainline Linux kernel as scheduling algorithm
+from the 3.14 version.
+
 
 \section{Resource Reservation scheduling}
 As stated in Section \ref{sec:scheduler}, modern multi-core CPUs allow multiple
@@ -207,4 +206,4 @@ to study how
 real-time models can be applied to web technologies and, more specifically, to
 WebGL. This case study is obviously a soft real-time application, since
 no life is put in danger and no critical system fails because of this part of
-the FriWalk architechture.
+the FriWalk architecture.

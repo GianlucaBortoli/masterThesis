@@ -2,13 +2,13 @@
 \chapter{Technological stack} \label{cha:tech_stack}
 
 There are a lot of technologies involved in this work. The whole system
-architechture is composed of many different layers and the technological
+architecture is composed of many different layers and the technological
 stack under study is quite complex. Hence, this chapter aims at explaining
 all its remarkable sections.
 
 
-\section{FriWalk's architechture}\label{sec:friwalk_architechture}
-The whole system architechture can be divided into two main parts. One that
+\section{FriWalk's architecture}\label{sec:friwalk_architecture}
+The whole system architecture can be divided into two main parts. One that
 is completely platform agnostic and another one that is platform dependent.
 This distinction is due to the fact that different operating systems handle
 3D graphics in many different ways, since the navigator application heavily
@@ -65,7 +65,7 @@ agnostic part of the system works as follows:
 
 
 \subsection{Platform dependent} \label{sec:platform_dependent}
-This part of the system architechture highly depends on the operating system
+This part of the system architecture highly depends on the operating system
 running on the machine under test. In this work, a Linux-based OS (ie.
 Ubuntu\footnote{\url{https://www.ubuntu.com}.})
 has been used. Therefore the description may not fit, fully or partially, to
@@ -109,9 +109,9 @@ and it is not strictly necessary for applications directly using OpenGL function
 calls.
 \begin{figure}[!htb]
     \center{\includegraphics[width=0.75\linewidth]{linux_graphics_stack.png}}
-    \caption{Illustration of the Linux graphics stack.}
+    \caption{Illustration of the Linux graphics stack~\cite{fig_linux_graphics_stack}.}
     \label{img:linux_graphics_stack}
-\end{figure} 
+\end{figure}
 
 Another key component is Mesa, a free and open-source implementation of the
 OpenGL specification allowing
@@ -176,7 +176,7 @@ final product. Moreover, Cesium is actively developed and maintained by a compan
 whose main interest is delivering the best possible library for powering its
 map-based software.
 
-\subsection{Cesium's Renderer architechture}
+\subsection{Cesium's renderer architecture}
 One of the most important features of the Cesium framework is its custom WebGL engine
 called \emph{Renderer}.
 It is built on the author's previous experience developing
@@ -207,7 +207,7 @@ the Renderer is composed of the following main parts:
 
 \begin{figure}[!htb]
     \center{\includegraphics[width=0.55\linewidth]{cesium_renderer.jpg}}
-    \caption{The components inside Cesium's Renderer.}
+    \caption{The components inside Cesium's Renderer~\cite{fig_cesium_renderer}.}
     \label{img:cesium_renderer}
 \end{figure}
 
@@ -222,7 +222,7 @@ one of its components. The Renderer uses the \emph{Scene} object to allocate and
 create the WebGL resources needed for Cesium.
 \begin{figure}[!htb]
     \center{\includegraphics[width=0.45\linewidth]{cesium_stack.jpg}}
-    \caption{All the components of the Cesium library.}
+    \caption{All the components of the Cesium library~\cite{fig_cesium_renderer}.}
     \label{img:cesium_stack}
 \end{figure}
 
@@ -234,7 +234,7 @@ Finally, as it is possible to see from Figure \ref{img:cesium_pipeline},
 Cesium has a classic animate/update/render pipeline.
 \begin{figure}[!htb]
     \center{\includegraphics[width=0.6\linewidth]{cesium_pipeline.jpg}}
-    \caption{The internal pipeline used in the Cesium framework.}
+    \caption{The internal pipeline used in the Cesium framework~\cite{fig_cesium_pipeline}.}
     \label{img:cesium_pipeline}
 \end{figure}
 
@@ -246,13 +246,13 @@ WebGL using the JavaScript objects created in the previous step. Eventually, the
 offered by Cesium can be found in~\cite{cesiumapi}.
 
 
-\section{Goole Chrome's architechture}
-As previously mentioned in Section \ref{sec:friwalk_architechture}, Google Chrome
+\section{Goole Chrome's architecture}
+As previously mentioned in Section \ref{sec:friwalk_architecture}, Google Chrome
 is the browser chosen for the work of this thesis. This section aims at explaining
 how Google Chrome is structured internally and how it interacts with the graphics
 system. Since the Chromium project, which is the core part of Google Chrome, is
 in rapidly and coutinuously evolving, everything that is written in this section
-has to be considered the state of the art architechture at the time of writing.
+has to be considered the state of the art architecture at the time of writing.
 
 Traditionally, web browsers only relied on the CPU for all the workload produced
 by the page load. Nowadays GPUs (dedicated or integrated) are a very common piece
@@ -263,12 +263,12 @@ browser not only allows to use specific hardware for drawing pixels, but also to
 enhence the parallelism between CPU and GPU that can work together for building
 a very optimized rendering pipeline.
 
-To better understand how GPU comes into play inside the architechture of Google
+To better understand how GPU comes into play inside the architecture of Google
 Chrome, the notion of \emph{compositor}~\cite{gpucompositing} has to be described first.
 The compositor is a piece of software inside the browser that coordinates the frame
 lifecycles and it manages the internal graphics data structures. The compositor
 is allowed to use the GPU to perform the drawing steps. In this hardware-accelerated
-architechture, compositing happens directly on the GPU via calls to the specific 3D
+architecture, compositing happens directly on the GPU via calls to the specific 3D
 APIs implemented by the OS instead of communicating with the renderer process via
 Inter Process Communication (IPC).
 Having said that, it is crucial to explain how the renderer process issues
@@ -286,7 +286,7 @@ As it is possible to see from Figure \ref{img:chrome_gpu_compositing}, Chrome's
 interaction with the GPU happens via a client-server model which is very similar
 to the one used by X11.
 \begin{figure}[!htb]
-    \center{\includegraphics[width=0.8\linewidth]{chrome_gpu_architechture.png}}
+    \center{\includegraphics[width=0.8\linewidth]{chrome_gpu_architecture.png}}
     \caption{Google Chrome's GPU compositing.}
     \label{img:chrome_gpu_compositing}
 \end{figure}
@@ -297,7 +297,7 @@ The flow of information works as follows:
         the calls for the system's 3D graphics (eg. WebGL calls) into a ring buffer called
         \emph{command buffer}~\cite{gpucommandbffer}. The data structure is basically a
         portion of memory which is shared between itself and the server counterpart of
-        the architechture.
+        the architecture.
     \item the \emph{server} (ie. the GPU process/service) runs in a less restrictive sandbox
         and it is allowed to access the 3D APIs available on the system (eg. OpenGL via Mesa 3D).
         It takes the serialized commands which are into the buffer, it parses them and finally
@@ -325,7 +325,7 @@ to wait for another sync point in buffer B, thus ensuring that commands appended
 B will not run before the ones inserted in A before the sync point. This feature
 is very useful every time multiple buffer are sharing some data.
 
-To summarize the key points of the Google Chrome architechture, the single GPU
+To summarize the key points of the Google Chrome architecture, the single GPU
 process per browser instance has multiple benefits. First of all it strengthen
 security, since the rendering logic is inside a sandboxed renderer and the interaction
 with the 3D graphics APIs is limited to one single process. Moreover, it allows
@@ -333,5 +333,5 @@ the entire browser instance not to crash if the GPU service does not work proper
 Finally it brings all the benefits of parallelism, where the renderer can issue
 commands very quickly leaving the GPU process the hard work to actually run them
 using the graphics hardware available on the system. This clearly allows to better
-exploit the multi-core architechtures so that the CPU and the GPU can work at the
+exploit the multi-core architectures so that the CPU and the GPU can work at the
 same time.

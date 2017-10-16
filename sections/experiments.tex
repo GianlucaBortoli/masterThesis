@@ -136,7 +136,7 @@ noteworthy difference in the response times can be observed after applying these
 methods. For this reason, further investigations regarding the \emph{computation\_time}
 component are foundamental for better studying these fluctuations.
 
-Moreover, after dividing all the WebGL functions into macro-operations groups
+After dividing all the WebGL functions into macro-operations groups
 (see Table \ref{tab:webgl_func_mapping}) it is possible to refine the graph shown
 in Figure \ref{img:no_map_example}. As it is possible to see from Figure
 \ref{img:no_map_groups}, this ``grouped'' bar chart is very useful to understand
@@ -148,7 +148,7 @@ each \emph{bindBuffer} function call.
     \label{img:no_map_groups}
 \end{figure}
 
-Finally, a comparison between extensive 2D and 3D tests showed that response times
+Moreover, a comparison between extensive 2D and 3D tests showed that response times
 during 3D rendering are slightly higher and more prone to fluctuations. This is
 certainly due to the different computation workloads which can significantly change
 over time, depending on the complexity of the scene to be rendered.
@@ -160,6 +160,14 @@ parts. This finding can be graphically summarized as shown in Figure \ref{img:ca
     \caption{The graphics functions arrival approximate model with the different groups.}
     \label{img:call_arrival}
 \end{figure}
+
+Finally, it is possible to confirm that the kind of analysis just explained is
+not bound only to the ``no-map'' trace, but it fits the entire profiling
+procedure. For the sake of completeness, this procedure can be successfully be
+applied also to the three remaining
+scenarios presented in Section \ref{sec:procedure}, even though the different
+tasks can switch their position along the timeline depending on the operation
+Chrome is accomplishing.
 
 
 \section{A fine-grained model}
