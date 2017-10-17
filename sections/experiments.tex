@@ -10,7 +10,7 @@ The first step to outline the behaviour of the test application is to include
 the the Web Tracing Framework library and to place the proper functions in the
 source code as shown in Listing \ref{code:wtf_example}.
 Consequently, the profiling measurements are obtained following the
-metodologies explained in Sections \ref{sec:assumptions} and \ref{sec:procedure}.
+methodologies explained in Sections \ref{sec:assumptions} and \ref{sec:procedure}.
 
 This very first approach can be considered as an
 exploratory phase. If all the default events available to the WTF are enabled, the
@@ -37,7 +37,7 @@ After some preliminary test, the trace extracted from the ``no-map'' scenario
 is selected as the first to be analyzed in detail. This choice is made
 to clarify the potential of the framework and to understand its limits, since
 this is the basic building block for the rest of the work.
-Profiling the navigator in the abovementioned scenario results in a trace that
+Profiling the navigator in the above-mentioned scenario results in a trace that
 illustrates a very interesting result. Figure \ref{img:no_map_overview}
 shows a timeline representation of the trace, where every colored vertical bar
 symbolizes the occurrence of a function call or an event tracked by the tool.
@@ -59,22 +59,22 @@ Hence, it allows to virtually split the trace into small groups by means of the
 \emph{bindBuffer} function calls.
 
 After identifying the particular structure underlying the trace, it is possible to check
-which are the recurrent WebGL functions belonging to each group (ie. the red ellipses
+which are the recurrent WebGL functions belonging to each group (i.e., the red ellipses
 in Figure \ref{img:no_map_overview}) and to gather them into macro-operations sets.
 If a check about the specific task fulfilled by each WebGL function is performed, it
 becomes clear that they belong to the three following main scopes:
 \begin{itemize}
     \item \emph{initialization/load data}: every WebGL function in this group
         is responsible for preparing the data structures loaded in memory
-        and for copying all the needed data (eg. copies the bitmap of a texture
+        and for copying all the needed data (e.g., copies the bitmap of a texture
         to the proper buffer).
     \item \emph{modify data}: these functions actually work on the vertex/color
         buffer to modify the data contained in it, especially via matrix
-        operations (eg. updates the value for a subset of objects in the buffer
+        operations (e.g., updates the value for a subset of objects in the buffer
         according to some linear transformation).
     \item \emph{display/draw}: this group is the one sending the commands
         that are actually used by the GPU to draw the shapes on the screen
-        (eg. renders the vertexes stored in a buffer to build more complex shapes).
+        (e.g., renders the vertexes stored in a buffer to build more complex shapes).
 \end{itemize}
 
 A more detailed functions-to-groups mapping is outlined in Table
@@ -127,14 +127,14 @@ Hence, this inconvenience needs to be reduced as much as possible in order not
 to jeopardize the validity of the results presented in this chapter.
 One possibility to mitigate
 the interference from higher priority tasks is to increase that of
-the Googhe Chrome instance using the \emph{nice}\footnote{\url{https://linux.die.net/man/1/nice}.}
+the Google Chrome instance using the \emph{nice}\footnote{\url{https://linux.die.net/man/1/nice}.}
 tool. Another approach includes directly changing the scheduling policy via the
 \emph{chrt}\footnote{\url{http://man7.org/linux/man-pages/man1/chrt.1.html}.}
 utility for using a different scheduling algorithm. After several attempts,
 it is possible to state that no
 noteworthy difference in the response times can be observed after applying these
 methods. For this reason, further investigations regarding the \emph{computation\_time}
-component are foundamental for better studying these fluctuations.
+component are fundamental for better studying these fluctuations.
 
 After dividing all the WebGL functions into macro-operations groups
 (see Table \ref{tab:webgl_func_mapping}) it is possible to refine the graph shown
@@ -178,7 +178,7 @@ deal with computation times.
 Hence, the problem of measuring exact computation
 times without the interference coming from other tasks becomes a strict requirement.
 Another important aspect is the resolution of the timings. As stated in Section
-\ref{sec:first_measurements}, the Web Tracing Framwork is able to extract times with a
+\ref{sec:first_measurements}, the Web Tracing Framework is able to extract times with a
 \( \pm 0.5\,ms \) precision and it is clearly not enough for applying any of
 the real-time mathematical models presented in the literature.
 Last but not least, a more fine-grained view of the function calls involved in
@@ -201,20 +201,20 @@ To be more precise, for the purpose of this thesis,
 the profiler enables to captures the ``duration events'' of the commands received by the GPU
 process from a server-side point of view (and not from the renderer client perspective).
 Moreover it achieves more precise timings with a resolution of \(\pm 1\,\mu s\),
-which is three orders of magniture greater than the one of WTF.
+which is three orders of magnitude greater than the one of WTF.
 Finally, this event tracing tool is able to accurately trace which are the functions
 being called inside the Chrome's source code and to identify the object's class
 calling that method. Therefore, it is possible to say that it is able to perfectly
 balance the defects of the Web Tracing Framework.
 
 The grouped bar chart displayed in Figure \ref{img:no_map_groups} helped to
-get an idea about the wheight each group has inside the entire response time.
+get an idea about the weight each group has inside the entire response time.
 Since this thesis aims at modelling the rendering pipeline of WebGL from a real-time
 point of view, the focus is put only to the ``\emph{display/draw}'' group.
 
 The Trace Event Profiling Tool has been designed to diagnose performance problems,
 allowing the developer to understand what the browser is doing ``under the hood''.
-Due to the milti-process nature of Chrome, this toolkit is able to record
+Due to the multi-process nature of Chrome, this toolkit is able to record
 both the activity of each Chrome's process and the proper method signatures
 (from the C++ core up to the client's JavaScript code). This procedure results in
 a huge amount of information, which can be visually inspected with a graphical
@@ -223,7 +223,7 @@ tasks.
 
 Another important aspect is how this tool is meant to be used in practice. The normal use case
 works as follows. First, open a new tab for the tool typing \url{about://tracing}
-insede the URL bar.
+inside the URL bar.
 Next click the ``record'' button to select only the events of interest and to
 start capturing a trace. After that, switch to the tab with the target content
 to be debugged and perform each operation needed to reproduce the bug or to trigger
@@ -257,7 +257,7 @@ in the previous section, it is
 also important to understand the scenario where the traces analyzed in Section
 \ref{sec:math_model} are captured.
 
-The traces displayed in~\cite{frias2017probabilistic} represent the computation
+The traces displayed in~\cite{villalba2017probabilistic} represent the computation
 times of a lane detection algorithm~\cite{fontanelli2014vision} used by a robot
 to determine its position with respect to some line markers arranged on the floor.
 More specifically, it takes as input an image and it outputs ``the distance
@@ -268,54 +268,50 @@ It follows that the so called relevant elements are not always the same througho
 all the images captured by the camera.
 
 In order to mimic this random component in the test application presented in this
-thesis, the starting point of the navigation (ie. latitude and longitude) and
+thesis, the starting point of the navigation (i.e., latitude and longitude) and
 the rotation of the camera are taken randomly at each run.
-This means that it is not possible to know in advanche the path followed on the
+This means that it is not possible to know in advance the path followed on the
 map, thus ensuring the unpredictability of the computation times of the WebGL
 rendering pipeline.
 
 Furthermore, among all the information captured by the
 Chrome's Event Trace Profiling Tool, only data concerning the GPU process is
-extracted. This allows to retrieve not only the timestamps of the events (ie.
+extracted. This allows to retrieve not only the timestamps of the events (i.e.,
 response times), but also the more relevant duration of complete events using
 the \emph{tdur} field. This value specifies the thread clock duration of complete
 events in microseconds, which corresponds to the computation times.
 
 
 \section{The mathematical model}\label{sec:math_model}
-Generally speacking, a real-time task \(\tau_{i}\) is composed of multiple jobs
+As presented in Section~\ref{cha:rt_background}, a real-time task \(\tau_{i}\) is composed of multiple jobs
 \(J_{i,\,j}\) which activate at time \(r_{i,\,j}\), finish at time \(f_{i,\,j}\)
-and compute for an amount of time \(c_{i,\,j}\). The real-time literature usually
-models the computation time \(c_{i\,j}\) as an i.i.d. stochastic process.
-On the contrary, the model presented in~\cite{frias2017probabilistic} is not
-based on this tightening assumption. In addition, probabilistic
-deadlines~\cite{abeni1999qos} are used instead of the normal hard ones.
+and compute for an amount of time \(c_{i,\,j}\). A common assumption in the real-time literature is to describe the computation time \(c_{i\,j}\) as an i.i.d. stochastic process, however this assumption is not always verified in the practice. In such cases, the model presented in~\cite{villalba2017probabilistic} is more useful to describe a particular type of non i.i.d. stochastic processes.
 
 This novel approach to real-time modeling techniques has been developed because the
-computation time studied by Fr\'{i}as et at. in~\cite{frias2017probabilistic}
+computation times studied by Villalba et at. in~\cite{villalba2017probabilistic}
 are strongly correlated with the previous ones and do not respect the i.i.d.
-assumption. Another notheworthy aspect of their study is that the
+assumption. Another noteworthy aspect of their study is that the
 computation time of the robotic application under test is random even for multiple
 executions of the same task on the same input data.
 Moreover, their lane algorithm presents a ``switching behaviour'' where computation
 times can change considerably depending on the scene taken as input.
 
 Hence, this scenario does not allow to describe all the computation times by means
-of a unique probability distribution but, at the same time, it has somehow to be described
-using some stochastic process. This is what the \emph{Markov Computation Time Model}
-(MCTM) aims to solve and it works as follows. The switching behaviour of the
-computation time can be described as a system with a finite number of states
+of a unique probability distribution, however the computation time are still described
+by a stochastic process. This is what the \emph{Markov Computation Time Model}
+(MCTM) aims to solve. In particular, the switching behaviour of the
+computation times can be described by a system with a finite number of states
 (\emph{N}). The set of time samples belonging to each state is represented
 by a random process, which can be further described with a probability
 distribution if it withstands the i.i.d. assumption.
 Moreover, if the transitions between the \emph{N} modes can be defined as a Markov
 process, the model just presented is a particular type of non i.i.d. processes
 named Markov Modulated Process (MMP)~\cite{fischer1993markov}.
-More precisely, it is an Hidden Markov Model (HMM)~\cite{eddy1996hidden}, since
-the only observable part is the output of each state (ie. the computation time)
+More precisely, it is an hidden Markov model (HMM)~\cite{eddy1996hidden}, since
+the only observable part is the output of each state (i.e., the computation time)
 and not the states themselves. In normal Markov models each
 state is directly visible to the observer, making the state transition probabilities
-the only parameters. On the other hand, in a Hidden Markov Model the states are
+the only parameters. On the other hand, in a hidden Markov model the states are
 not directly visible but only their output is.
 
 The MCTM just explained can be described as a triple \(\{M,\,P,\,C\}\), where:
@@ -329,7 +325,7 @@ The MCTM just explained can be described as a triple \(\{M,\,P,\,C\}\), where:
 
 After specifying how the mathematical model works, the next step is to discover
 the values for the \(M\), \(P\) and \(C\) parameters. This task is known as the
-\emph{HMM learning problem} which, given a limited output sequence (ie. the
+\emph{HMM learning problem} which, given a limited output sequence (i.e., the
 sequence of the computation times inside a trace),
 finds the best set of parameters which best fits that sequence.
 This can be solved using well known algorithms present in the
@@ -348,7 +344,7 @@ The entire workflow can be summarized as shown in Figure \ref{img:hmm_workflow}.
     \label{img:hmm_workflow}
 \end{figure}
 
-The results presented in~\cite{frias2017probabilistic} show a very close match
+The results presented in~\cite{villalba2017probabilistic} show a very close match
 between the analysis and the experimental data, meaning that the stochastic
 process underlying the MCTM is able to properly describe the trend of the
 computation time measured on the field.
@@ -357,8 +353,15 @@ behaviour of other types of applications. This thesis aims also at evaluating su
 approach to the 3D navigator developed for the FriWalk user interface.
 It is a completely different type of application with respect to the one
 inspiring the Markov Computation Time Model but, at the same time, it does not
-withstand the usual i.i.d. assumption. Therefore it is a good match for
-testing the model on a completely different field like that of web technologies.
+completely withstand the usual i.i.d. assumption. Figure~\ref{img:mctm_1_state} shows the autocorrelation function of a trace of computation times obtained from the navigator application.
+
+\begin{figure}[!htb]
+    \center{\includegraphics[width=0.4\linewidth]{mctm_1_state_new.pdf}}
+    \caption{Autocorrelation functions obtained from the original trace of computation times.}
+    \label{img:mctm_1_state}
+\end{figure}
+
+As mentioned before, the developed 3D navigator does not completely match the required i.i.d. assumption for the classical stochastic analysis of soft real-time systems, therefore it is a good candidate for testing the MCTM on a completely different field like that of web technologies.
 
 In order to run this analysis also on the navigator application, the Trace Event
 Profiling Tool presented in Section \ref{sec:chrome_trace_event_prof} is used
@@ -366,27 +369,25 @@ to capture the sequence of the computation times. 25 traces composed of 15000
 samples each are extracted from the raw data outputted by the profiler and,
 consequently, they are employed for three different purposes as follows:
 \begin{enumerate}
-    \item 10 are used to run the simulator of the resource-reservation
+    \item 10 traces are used to run the simulator of the resource-reservation
         scheduling algorithm.
-    \item 10 are used for the MCTM model. To be more precise, 4 are used as
+    \item 10 traces are used for the MCTM model. To be more precise, 4 traces are used as
         training set for computing the parameters of the model (HMM learning
-        problem), while the other 6 are used as test set (HMM decoding problem).
-    \item 5 are used to compute an i.i.d. approximation of the computation time,
+        problem), while the other 6 traces are used as test set (HMM decoding problem).
+    \item 5 traces are used to compute an i.i.d. approximation of the computation time,
         treating the traces as if they follow this constraint.
 \end{enumerate}
 
 
 \subsection{Results}\label{sec:mctm_results}
 The algorithm solving the HMM learning problem is run multiple times in order to
-find the parameters that best fit the Markov Computation Time Model.
-As it is possible to see from Figure \ref{img:mctm_2_states}, the autocorrelation
-functions computed using the MCTM composed of 2 states suggest that they are
-uncorrelated, even though the first part of the curve shows quite high values.
-Moreover, the Cumulative Distribution Function (CDF) is an index of how computation
-times are spread across the sequence and it displays a neat distinction between
+find the parameters that best fit the Markov Computation Time Model. The tool identified a 2-state MCTM, as observed in Figure~\ref{img:mctm_2_states}. The autocorrelation
+functions of the computation times for each state suggests that there is a small correlation between the samples, in particular in the first mode (Mode \# 1), but in general, the autocorrelation has decreased when compared with the original trace (see Figure~~\ref{img:mctm_1_state}).
+Moreover, the Cumulative Distribution Function (CDF), an index of how the computation
+times are spread across the sequence, displays a neat distinction between
 the two modes inside the MCTM.
 \begin{figure}[!htb]
-    \center{\includegraphics[width=0.75\linewidth]{mctm_2_states.png}}
+    \center{\includegraphics[width=0.75\linewidth]{mctm_2_states_new.pdf}}
     \caption{CDF (above) and autocorrelation functions obtained from two
         different modes (below).}
     \label{img:mctm_2_states}
@@ -395,28 +396,28 @@ the two modes inside the MCTM.
 This means that the original trace is split into two different parts, which
 are identified by the procedure implementing the HMM decoding step. The algorithm
 behind this classification phase is good enough for extracting two fairly
-uncorrelated sub-sequences, but they did not pass an independence test.
+uncorrelated sub-sequences, however, they did not pass an independence test.
+
 Furthermore, if we consider the model with 3 states presented in Figure
 \ref{img:mctm_3_states}, it is possible to notice how the CDFs belonging to state
-2 and 3 are almost perfectly overlapped. This situation suggests that these two
-modes should be collapsed into a single one, since the distribution of the
+2 and 3 are almost overlapped. This situation suggests that these two
+modes could be collapsed into a single one, since the distribution of the
 computation times is nearly identical. In addition, even their autocorrelation
 values do not improve much.
 \begin{figure}[!htb]
-    \center{\includegraphics[width=0.75\linewidth]{mctm_3_states.png}}
+    \center{\includegraphics[width=0.75\linewidth]{mctm_3_states_new.pdf}}
     \caption{CDF (above) and autocorrelation functions obtained from three
         different modes (below).}
     \label{img:mctm_3_states}
 \end{figure}
 
 As a last step, the probability of respecting the deadlines is studied using the
-PROSIT~\cite{palopoli2014tool} tool. Given the scheduling parameters and the
-sequence of computation times for the task, this tool is able to provide easy
+PROSIT~\cite{palopoli2014tool} tool. Given the scheduling parameters, the task period, the
+probability distribution of the computation times for each mode and the probability transition matrix of the MCTM, this tool is able to provide easy
 access to probabilistic analysis of soft real-time systems. PROSIT is applied using
 the following parameters:
 \begin{itemize}
-    \item the computation time sequence extracted as discussed in Section
-        \ref{sec:chrome_trace_event_prof}
+    \item the distribution of computation times for each mode and the probability transition matrix f the MCTM estimated as discussed in Section~\ref{sec:mctm_results}
     \item task period \( T_i = 60\,ms \)
     \item reservation period \( T_{i}^s = 20\,ms \)
     \item budget \( Q_{i}^s = 2\,ms \)
@@ -428,12 +429,12 @@ the following parameters:
     \label{img:deadline_comparison}
 \end{figure}
 
-As it is possible to see from Figure \ref{img:deadline_comparison}, the i.i.d.
-approximation (dark red solid line) overestimates the probability of respecting
-the deadline that is computed using the PROSIT tool (light blue solid line).
+Figure \ref{img:deadline_comparison} presents the probability of respecting the deadline, expressed as the number of jobs that finish before the deadline over the total number of jobs. The figure compares the results obtained with a resource reservation simulator (dotted red line), the i.i.d.
+approximation (dashed yellow line)  and the 2-states MCTM (blue solid line). It is important to point out that the i.i.d. approximation of the model overestimates the probability of respecting
+the deadline with respect to the simulation results. This optimism in the analysis could be dangerous because the analysis tool is providing a guarantee that the system is not able to deliver.
 
 Moreover, none of the models found by the HMM learner/decoder algorithms is able
 to classify the computation times in a way that makes the model's behaviour very
-close to the simulation. However, the MCTM with two modes is always conservative
+close to the simulation. However, the 2-states MCTM is always conservative
 with respect to the simulation, meaning that it provides stricter guarantees and
 that it can be used in practice to design a real-time system.

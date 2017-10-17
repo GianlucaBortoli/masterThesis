@@ -2,7 +2,7 @@
 \chapter{Real-Time background} \label{cha:rt_background}
 
 The work described in this thesis has many theoretical foundations that has to be
-clear in order to understand the reasons behind some of the design choiches and
+clear in order to understand the reasons behind some of the design choices and
 assumptions. All the needed notions in the real-time theory are explained in the
 following sections.
 
@@ -50,8 +50,8 @@ variable described by a certain Probability Mass Function (PMF) since it
 takes values in the discrete field.
 The i.i.d. assumption is one of the milestones of the real-time modeling theory.
 However, the analysis proposed in Chapter \ref{cha:rt_model} will relax this 
-constraint following the study proposed by Fr\'{i}as et al
-in~\cite{frias2017probabilistic}, where a novel mathematical model is applied
+constraint following the study proposed by Villalba et al
+in~\cite{villalba2017probabilistic}, where a novel mathematical model is applied
 in order to describe computation times that are not following the i.i.d.
 assumption.
 
@@ -61,6 +61,7 @@ It represents the upper bound for the fraction of CPU time spent to execute a ta
 \begin{equation}\label{eq:wcet}
     W_{i} = \ceil[\bigg]{\frac{c_{i,\,j}}{T_{i}}}
 \end{equation}
+\comment{Bernardo: I am not sure of what Equation~\ref{eq:wcet} represents. What is $T_i$? You introduced $T$ as the set of tasks, while the tasks inside the set are presented as $\tau_i$, hence I am not sure of what is $T_i$. On the other hand, the WCET is the maximum possible computation time that your job could suffer and, in general, is not known. You only know the maximum computation time that was observed during different executions of your program  and from that you could try to infer something as you mentioned in the next paragraph.}
 
 Computing the WCET value may involve statistical testing~\cite{bernat2002wcet}
 and, in some case, also formal verification~\cite{souyris2009formal} of the
@@ -73,7 +74,7 @@ Equation \ref{eq:wcet} as:
 
 Furthermore, every real-time job has to respect a temporal constraint called
 deadline. The standard approach is to have a deterministic deadline for a job
-that cannot be missed (hard real-time), but other models handles also
+that cannot be missed (hard real-time), but other models handle also
 less strict and probabilistic deadlines (soft real-time).
 More formally, every job \( J_{i,\,k} \) has a relative deadline \( D_{i} \) that
 is used to define an absolute deadline \( d_{i,\,k} \) as follows:
@@ -98,15 +99,18 @@ and it is triggered every fixed period \( T_{i} \). Its lifetime can be seen as
 a cycle, where it activates at time \( r_{i,\,k} \), it executes for an amount 
 of time \( c_{i,\,k} \) and then it waits for the next period to start again.
 The loop exit condition depends on the specific application.\\
+
+\comment{Bernardo: Here you introduce $T_i$ as the task period, however it is evident that the period does not have anything to do with the WCET.}
+
 On the contrary, as the name suggests, an aperiodic task has non-periodic arrivals.
 Moreover there is no minimum inter-arrival time between the jobs and,
 most of the times, these tasks do not have any recurrent structure. They are used
 to model operations occurring rarely and that are irregular during the lifetime
 of the whole system.\\
-Finally, the sporadic task is very similar to the periodic one. Both have a minimun
+Finally, the sporadic task is very similar to the periodic one. Both have a minimum
 inter-arrival time between each activation, even though it may not be always the
 same throughout the entire execution. A sporadic task is mainly triggered by an
-external event (eg. a network packet) instead of using a timer.
+external event (e.g.,. a network packet) instead of using a timer.
 
 
 \section{Scheduler} \label{sec:scheduler}
@@ -125,7 +129,7 @@ work done. Here is where the task scheduler, which is responsible for
 scheduling a set of tasks, starts its job.
 
 There exist several scheduling algorithms that can be used to select which task 
-has to be executed at every instant \emph{t}. More in general, it is
+has to be executed at every instant \emph{t}. In general, it is
 possible to say that a scheduling algorithm \emph{A} generates a schedule
 \( \sigma_{A}\left(t\right) \) starting from a set of tasks \( T = \{\tau_{i}\} \).
 Furthermore, a schedulability test can be performed to see if the scheduling
@@ -136,17 +140,20 @@ guarantees that every deadline (probabilistic or not) is never missed.
 Some of the most famous scheduling algorithms in the computer science literature
 are Rate Monotonic (RM)~\cite{lehoczky1989rate}, Deadline Monotonic
 (DM)~\cite{audsley1991hard} and Earliest Deadline First (EDF)~\cite{jansen2003lightweight}.
+
+\comment{Bernardo: I will include the paragraph talking about SCHED\_DEADLINE in the next section. SCHED\_DEADLINE is a scheduling policy, as SCHED\_FIFO or SCHED\_RR, for the Linux kernel and it is based on EDF. Hence, I believe that it has more sense to describe it in the Resource Reservation Scheduling.}
 Another well known approach is the so called \emph{sched\_deadline}~\cite{lelli2016deadline}
 algorithm, which is available in the mainline Linux kernel as scheduling algorithm
 from the 3.14 version.
 
 
 \section{Resource Reservation scheduling}
+\comment{Bernardo: I removed the RR acronym. As a paper reviewer pointed out to us, the real-time systems community uses RR for round-robin, hence it could be misleading to use it also for resource reservations.}
 As stated in Section \ref{sec:scheduler}, modern multi-core CPUs allow multiple
-tasks to run concurrently. Thus, there esists another approach to the schedulability
+tasks to run concurrently. Thus, there exists another approach to the schedulability
 problem.
 
-The resource reservation (RR)~\cite{abeni1998integrating} algorithm allows to associate to each task 
+The resource reservation algorithm~\cite{abeni1998integrating} allows to associate to each task 
 \( \tau_{i} \) a reservation \( \left(Q_{i}^s, T_{i}^s\right) \). 
 This algorithm allows the \( i^{th} \) task to only run for \( Q_{i}^s \) time units 
 in every interval of length \( T_{i}^s \). The value \( Q_{i}^s \) is defined as
@@ -161,7 +168,7 @@ In this way the scheduler reserves for each task an amount of computation
 time \( Q_{i}^s \) in each reservation period \( T_{i}^s \). This constraint
 prevents tasks from running for more time than the selected budget and
 therefore each task does not need to pay attention to the other tasks running
-concurrently on the same CPU. This very important property for RR algorithm is called
+concurrently on the same CPU. This very important property for resource reservation algorithms is called
 \textbf{temporal isolation} and it is valid as long as the scheduling
 condition~\cite{lee2007handbook} shown in Equation \ref{eq:temporal_isolation} 
 holds.
@@ -174,19 +181,20 @@ task on its own, making its life much easier.
 
 
 \section{Hard vs. soft real-time}
-First of all, real time processing should not be confused with ``fast''. The notion
+First of all, real-time processing should not be confused with ``fast''. The notion
 of speed highly depends on the specific application. Real time systems focus on
 giving deterministic and predictable response times, quantifying the worst-case
-scenario and being prepared to handle it properly.
-
-As previously mentioned in Section \ref{sec:task_model}, there exist two different
+scenario and being prepared to handle it properly. As previously mentioned in Section \ref{sec:task_model}, there exist two different
 notions of real-time.\\
 In hard real-time systems every deadline must be respected, meaning
-that even a single dealine miss implies a system failure. This is the case, for
+that even a single deadline miss implies a system failure. This is the case, for
 example, of some medical applications like pacemakers and some avionics systems
 where many people's lives are in danger if such systems fail. To achieve such
 reliability, enhanced real-time OS kernels have to be used, since they are proved
-to guarantee a 100\% precision on the WCET value. Even a 99,9\% precision is not
+to guarantee a 100\% precision on the WCET value. 
+\comment{Bernardo: I am not sure about this statement, the real--time OS kernels avoid unbounded latencies (reducing them to a minimum) and, as a result, they provides fast ``worst case'' times, but I am not sure that they guarantee that precision. Consider that the result of a job depends on the input, so you will need to provide all the possible inputs to the program in order to expect the effective WCET.}
+
+Even a 99,9\% precision is not
 enough in this case. ``Safety-critical'' systems is a concept that often goes
 together with the one of hard real-time, where strict temporal guarantees are
 mixed with functional safety concepts in the industry sector. A trivial but clear
@@ -195,12 +203,12 @@ it is being used.\\
 On the other hand, the requirements for soft real-time systems are looser. This
 means that it is acceptable to miss some deadline.
 This is what happens in streaming video players for example, where missing the
-deadline for some frame may not even noticed by the user. Clearly, if too many
+deadline for some frame may be not even noticed by the user. Clearly, if too many
 frames are not displayed on the screen the streaming cannot be enjoyed by the
-user in any way. Another notheworthy aspect is that if a soft real-time system
+user in any way. Another noteworthy aspect is that if a soft real-time system
 misses some deadline no critical failure happens and no life is put in danger.
 Obviously this is clearly not the case for the other ones, where a disaster
-maight happen only due to a single deadline miss in the entire system.\\
+might happen only due to a single deadline miss in the entire system.\\
 Focusing on the work of this thesis, the 3D navigator has been also developed 
 to study how
 real-time models can be applied to web technologies and, more specifically, to
