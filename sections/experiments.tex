@@ -355,7 +355,7 @@ It is a completely different type of application with respect to the one
 inspiring the Markov Computation Time Model but, at the same time, it does not
 completely withstand the usual i.i.d. assumption. Figure~\ref{img:mctm_1_state} shows the autocorrelation function of a trace of computation times obtained from the navigator application.
 \begin{figure}[!htb]
-    \center{\includegraphics[width=0.5\linewidth]{mctm_autocorrelation_original.pdf}}
+    \center{\includegraphics[width=0.45\linewidth]{mctm_autocorrelation_original.pdf}}
     \caption{Autocorrelation functions obtained from the original trace of computation times.}
     \label{img:mctm_1_state}
 \end{figure}
@@ -386,7 +386,7 @@ Moreover, the Cumulative Distribution Function (CDF), an index of how the comput
 times are spread across the sequence, displays a neat distinction between
 the two modes inside the MCTM.
 \begin{figure}[!htb]
-    \center{\includegraphics[width=0.62\linewidth]{mctm_2_states.pdf}}
+    \center{\includegraphics[width=0.57\linewidth]{mctm_2_states.pdf}}
     \caption{CDF (above) and autocorrelation functions obtained from two
         different modes (below).}
     \label{img:mctm_2_states}
@@ -404,10 +404,16 @@ modes could be collapsed into a single one, since the distribution of the
 computation times is nearly identical. In addition, even their autocorrelation
 values do not improve much.
 \begin{figure}[!htb]
-    \center{\includegraphics[width=0.62\linewidth]{mctm_3_states.pdf}}
+    \center{\includegraphics[width=0.57\linewidth]{mctm_3_states.pdf}}
     \caption{CDF (above) and autocorrelation functions obtained from three
         different modes (below).}
     \label{img:mctm_3_states}
+\end{figure}
+
+\begin{figure}[!htb]
+    \center{\includegraphics[width=0.5\linewidth]{respect_deadline_comparison.pdf}}
+    \caption{Probability of respecting the deadline for the different methods.}
+    \label{img:deadline_comparison}
 \end{figure}
 
 As a last step, the probability of respecting the deadlines is studied using the
@@ -431,8 +437,3 @@ to classify the computation times in a way that makes the model's behaviour very
 close to the simulation. However, the 2-states MCTM is always conservative
 with respect to the simulation, meaning that it provides stricter guarantees and
 that it can be used in practice to design a real-time system.
-\begin{figure}[!htb]
-    \center{\includegraphics[width=0.47\linewidth]{respect_deadline_comparison.pdf}}
-    \caption{Probability of respecting the deadline for the different methods.}
-    \label{img:deadline_comparison}
-\end{figure}
