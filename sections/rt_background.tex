@@ -60,7 +60,7 @@ represents the upper bound for the fraction of CPU time spent to execute a task
 \( \tau_{i} \). Computing the WCET value may involve statistical testing~\cite{bernat2002wcet}
 and, in some case, also formal verification~\cite{souyris2009formal} of the
 software under test. These approaches are generally needed since the WCET cannot
-be directly measured and its value has to be inferred from the computation times
+be directly measured and its value has to be inferred from the computation time
 observed during different executions of the program.
 Moreover, the total system utilization \( W_{tot} \) can be computed using
 the following equation:
@@ -103,7 +103,7 @@ of the whole system.\\
 Finally, the sporadic task is very similar to the periodic one. Both have a minimum
 inter-arrival time between each activation, even though it may not be always the
 same throughout the entire execution. A sporadic task is mainly triggered by an
-external event (e.g.,. a network packet) instead of using a timer.
+external event (e.g., a network packet) instead of using a timer.
 
 
 \section{Scheduler} \label{sec:scheduler}
@@ -141,7 +141,7 @@ tasks to run concurrently. Thus, there exists another approach to the schedulabi
 problem.
 
 The resource reservation algorithm~\cite{abeni1998integrating} allows to associate to each task 
-\( \tau_{i} \) a reservation \( \left(Q_{i}^s, T_{i}^s\right) \). 
+\( \tau_{i} \) a reservation \( \left(Q_{i}^s,\,T_{i}^s\right) \).
 This algorithm allows the \( i^{th} \) task to only run for \( Q_{i}^s \) time units 
 in every interval of length \( T_{i}^s \). The value \( Q_{i}^s \) is defined as
 budget, while \( T_{i}^s \) is known as the reservation period.

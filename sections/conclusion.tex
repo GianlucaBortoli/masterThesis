@@ -1,9 +1,6 @@
 %!TEX root=../thesis.tex
 \chapter{Conclusion and future work} \label{cha:conclusion}
 
-% questo approccio può essere esteso per studiare come si comporta una qualsiasi
-% applicatione che gira dentro un browser e NON solamente quella di test
-
 Adopting the Markov Computation Time Model to study the behaviour of a web
 application which heavily use WebGL is feasible.
 The outcomes presented in Section \ref{sec:mctm_results} show that it is
@@ -13,10 +10,10 @@ However, the values belonging to each modes are not highly correlated but they
 are not independent as they should be in principle.
 This may be a problem in the logic of the HMM decoder algorithm. In the specific
 case of this work, the classification phase splits the original trace into two
-states (Figure \ref{img:mctm_2_states}) whose CDFs are clearly ditinct. On the
-other hand, when the system is composed of three modes, two out of three CDFs
-are completely overlapped. Hence, two is the number of states that best fit the
-MCTM
+states (Figure \ref{img:mctm_2_states}) whose CDFs are clearly distinct. On the
+other hand, if a system composed of three modes is considered, two out of three
+CDFs are completely overlapped. Hence, two is the number of states that best
+fits the MCTM.
 
 As future work, it is possible to switch from the ``raw'' computation times taken
 into consideration in this thesis to ``per-frame'' values. This can be done
@@ -28,6 +25,6 @@ of any piece of software running inside a web browser. This flexibility allows
 the team working on the ACANTO project to run the entire analysis on the
 specific hardware available on the FriWalk. In addition to this, another
 challenging improvement is to modify Cesium's rendering pipeline to introduce
-the concept of priority queues for the graphics commands. In this way it would
+the concept of priority queues for the WebGL primitives. In this way it would
 be possible to render the ``most important'' parts of the scene first (eg. near
 the user's position) and to delay the ``less important'' ones.
