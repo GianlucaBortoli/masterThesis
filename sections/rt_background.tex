@@ -19,7 +19,7 @@ jobs composing a task can be better understood looking at Figure \ref{img:task_m
     \label{img:task_model}
 \end{figure}
 
-Every job is formally defined as a touple
+Every job is formally defined as a tuple
 \( J_{i,\,k} = \left(r_{i,\,k}, \;f_{i,\,k}, \;c_{i,\,k}\right) \) where:
 \begin{itemize}
     \item the subscript \( i \) specifies the number of the task inside the task 
@@ -50,7 +50,7 @@ variable described by a certain Probability Mass Function (PMF) since it
 takes values in the discrete field.
 The i.i.d. assumption is one of the milestones of the real-time modeling theory.
 However, the analysis proposed in Chapter \ref{cha:rt_model} will relax this 
-constraint following the study proposed by Villalba et al
+constraint following the study proposed by Villalba et al.
 in~\cite{villalba2017probabilistic}, where a novel mathematical model is applied
 in order to describe computation times that are not following the i.i.d.
 assumption.
@@ -72,12 +72,30 @@ inter-arrival time between each activation, even though it may not be always the
 same throughout the entire execution. A sporadic task is mainly triggered by an
 external event (e.g.,. a network packet) instead of using a timer.
 
+Not all the real-time tasks are equal. The different types existing in
+the literature are \emph{periodic}, \emph{aperiodic} and \emph{sporadic}.
+
+A periodic task has regular structure
+and it is triggered every fixed period \( T_{i} \). Its lifetime can be seen as
+a cycle, where it activates at time \( r_{i,\,k} \), it executes for an amount 
+of time \( c_{i,\,k} \) and then it waits for the next period to start again.
+The loop exit condition depends on the specific application.\\
+On the contrary, as the name suggests, an aperiodic task has non-periodic arrivals.
+Moreover there is no minimum inter-arrival time between the jobs and,
+most of the times, these tasks do not have any recurrent structure. They are used
+to model operations occurring rarely and that are irregular during the lifetime
+of the whole system.\\
+Finally, the sporadic task is very similar to the periodic one. Both have a minimum
+inter-arrival time between each activation, even though it may not be always the
+same throughout the entire execution. A sporadic task is mainly triggered by an
+external event (e.g., a network packet) instead of using a timer.
+
 Another very important concept is the worst-case execution time (WCET), which
 represents the upper bound for the fraction of CPU time spent to execute a task
 \( \tau_{i} \). Computing the WCET value may involve statistical testing~\cite{bernat2002wcet}
 and, in some case, also formal verification~\cite{souyris2009formal} of the
 software under test. These approaches are generally needed since the WCET cannot
-be directly measured and its value has to be inferred from the computation times
+be directly measured and its value has to be inferred from the computation time
 observed during different executions of the program.
 Moreover, the total system utilization \( W_{tot} \) can be computed using
 the following equation:
@@ -137,7 +155,7 @@ tasks to run concurrently. Thus, there exists another approach to the schedulabi
 problem.
 
 The resource reservation algorithm~\cite{abeni1998integrating} allows to associate to each task 
-\( \tau_{i} \) a reservation \( \left(Q_{i}^s, T_{i}^s\right) \). 
+\( \tau_{i} \) a reservation \( \left(Q_{i}^s,\,T_{i}^s\right) \).
 This algorithm allows the \( i^{th} \) task to only run for \( Q_{i}^s \) time units 
 in every interval of length \( T_{i}^s \). The value \( Q_{i}^s \) is defined as
 budget, while \( T_{i}^s \) is known as the reservation period.
@@ -162,7 +180,7 @@ holds.
 Temporal isolation allows the system designer to analyze every
 task on its own, making its life much easier.
 
-Given the relevance of the resource reservation algorighm, the so called
+Given the relevance of the resource reservation algorithm, the so called
 SCHED\_DEADLINE~\cite{lelli2016deadline} scheduling policy is available
 in the mainline Linux kernel (along with SCHED\_FIFO and SCHED\_RR) from the
 3.14 version and it is based on EDF.
