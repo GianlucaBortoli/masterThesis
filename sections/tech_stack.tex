@@ -24,8 +24,8 @@ the walker assistant hardware, the browser running the
 user interface (Google Chrome has been used in this study) and the component of
 the OS which is responsible for implementing the OpenGL~\cite{woo1999opengl}
 and the GLSL~\cite{marroquim2009introduction} libraries. On the other hand,
-the platform dependent part includes the 3D graphics driver (eg. Mesa 3D for
-Linux) and the OS kernel (eg. the Linux kernel). In the specific case of the
+the platform dependent part includes the 3D graphics driver (e.g., Mesa 3D for
+Linux) and the OS kernel (e.g., the Linux kernel). In the specific case of the
 Linux kernel, it implements a System Call Interface (SCI) for interacting
 with the Kernel Mode Setting (KMS)~\cite{linuxkms} and the Direct Rendering Manager
 (DRM)~\cite{paul2000introduction}.
@@ -38,7 +38,7 @@ placeholder on the map: the \emph{latitude}, the \emph{longitude} and the
 needed for the navigator to behave correctly, but also all the necessary.
 
 From an high-level point of view, the walker assistant hardware can be regarded
-as the portion of the system that is responsible for providing such data. Mooreover,
+as the portion of the system that is responsible for providing such data. Moreover,
 it can guarantee that data are available for the navigator at a fixed rate over
 time using the WebSocket protocol~\cite{fette2011websocket}.
 After receiving the data, the navigator properly moves the placeholder on the map.
@@ -104,7 +104,7 @@ stack is quite complex and consists of many different layers in different parts
 of the OS. The main ones are: the Mesa 3D Graphics Library, the System Call
 Interface, the Kernel Mode Setting and the Direct Memory Manager.
 As it is possible to see from Figure \ref{img:linux_graphics_stack}, the DRM and 
-the display server belongs to the windowing system (eg. X11 or Wayland~\cite{wayland}) 
+the display server belongs to the windowing system (e.g., X11 or Wayland~\cite{wayland})
 and it is not strictly necessary for applications directly using OpenGL function
 calls.
 \begin{figure}[!htb]
@@ -119,7 +119,7 @@ Linux environment. Fortunately,
 DRI is conceived to run without the brokering of the X server, but it is still
 needed to allocate a surface on the display where Mesa outputs to. Moreover, from
 an high-level perspective the communication between Mesa and the GPU works by
-exchanginc commands (e.g., ``draw a point'') and data (e.g., ``the coordinates of the
+exchanging commands (e.g., ``draw a point'') and data (e.g., ``the coordinates of the
 point and its color'') that are copied to a buffer shared with the graphics hardware.
 
 
@@ -149,9 +149,9 @@ and Unity~\cite{engine9unity}.
 
 The reason why the 3D navigator developed in this work uses a framework built on
 WebGL is that it is, at the time of writing, the only open-source alternative to
-build 3D maps inside a browser. This choiche permits to write JavaScript source
+build 3D maps inside a browser. This choice permits to write JavaScript source
 code to develop the application and, at the same time, to exploit the power of
-a GPU using a framweork that takes care of implementing the shaders programs.
+a GPU using a framework that takes care of implementing the shaders programs.
 To be more precise, looking at the whole system architecture shown in Figure
 \ref{img:system_arch}, WebGL is a technology that lie inside the browser
 (in this specific case Google Chrome and its Skia\footnote{\url{https://skia.org}.}
@@ -238,7 +238,7 @@ Cesium has a classic animate/update/render pipeline.
     \label{img:cesium_pipeline}
 \end{figure}
 
-The \emph{animate} step involves all the aspects of building each object (eg.
+The \emph{animate} step involves all the aspects of building each object (e.g.,
 textures, material properties etc.) that is later rendered without interacting with
 WebGL. The \emph{update} step allocates and updates all the resources needed by
 WebGL using the JavaScript objects created in the previous step. Eventually, the
@@ -246,12 +246,12 @@ WebGL using the JavaScript objects created in the previous step. Eventually, the
 offered by Cesium can be found in~\cite{cesiumapi}.
 
 
-\section{Goole Chrome's architecture}
+\section{Google Chrome's architecture}
 As previously mentioned in Section \ref{sec:friwalk_architecture}, Google Chrome
 is the browser chosen for the work of this thesis. This section aims at explaining
 how Google Chrome is structured internally and how it interacts with the graphics
 system. Since the Chromium project, which is the core part of Google Chrome, is
-in rapidly and coutinuously evolving, everything that is written in this section
+in rapidly and continuously evolving, everything that is written in this section
 has to be considered the state of the art architecture at the time of writing.
 
 Traditionally, web browsers only relied on the CPU for all the workload produced
@@ -274,11 +274,11 @@ Inter Process Communication (IPC).
 Having said that, it is crucial to explain how the renderer process issues
 commands to the GPU. The browser is conceived to be multi-process, but
 there is only one dedicated process for this task: the so called \emph{GPU process}.
-The existance of this highly specialized process is a design decision made by Google's
-engineers especially (but not only) for security concenrns. This is due to the
+The existence of this highly specialized process is a design decision made by Google's
+engineers especially (but not only) for security concerns. This is due to the
 sandbox protecting each renderer process in Chrome, which means that it cannot
 directly issue calls to the system or to the 3D graphics APIs
-made available by the host OS (eg. OpenGL). For this reason it is the GPU process' job
+made available by the host OS (e.g., OpenGL). For this reason it is the GPU process' job
 to take care of this part of the rendering pipeline, since it is specifically
 designed to provide access to the system's 3D graphics APIs from within the renderer
 process ``jail''.
@@ -293,18 +293,18 @@ to the one used by X11.
 
 The flow of information works as follows:
 \begin{itemize}
-    \item the \emph{client} (ie. some code running inside the renderer process) serializes
-        the calls for the system's 3D graphics (eg. WebGL calls) into a ring buffer called
+    \item the \emph{client} (i.e. some code running inside the renderer process) serializes
+        the calls for the system's 3D graphics (e.g., WebGL calls) into a ring buffer called
         \emph{command buffer}~\cite{gpucommandbffer}. The data structure is basically a
         portion of memory which is shared between itself and the server counterpart of
         the architecture.
-    \item the \emph{server} (ie. the GPU process/service) runs in a less restrictive sandbox
-        and it is allowed to access the 3D APIs available on the system (eg. OpenGL via Mesa 3D).
+    \item the \emph{server} (i.e. the GPU process/service) runs in a less restrictive sandbox
+        and it is allowed to access the 3D APIs available on the system (e.g., OpenGL via Mesa 3D).
         It takes the serialized commands which are into the buffer, it parses them and finally
         it issues the graphics calls to the driver.
 \end{itemize}
 
-The reason behing the usage of a shared storage between the client and the server to implement
+The reason behind the usage of a shared storage between the client and the server to implement
 the command buffer is to optimize the passage of large resources, such as bitmaps,
 textures and vertex arrays. Another important aspect of this design choice is
 portability. This means that, from the point of view of the client, there is (nearly) no
@@ -317,8 +317,8 @@ memory collecting the commands a client puts into it. Consequently the client
 communicates to the GPU process how much data it wrote into that buffer so that
 the GPU process can read, parse, validate and execute these commands.
 
-Another important issue that had to be addressed is the syncronization between different
-command buffers sharing some data (eg. textures). This can be enforced inserting
+Another important issue that had to be addressed is the synchronization between different
+command buffers sharing some data (e.g., textures). This can be enforced inserting
 \emph{sync points} and can prevent a lot of data duplicates.
 For example it is possible to insert a sync point on buffer A
 to wait for another sync point in buffer B, thus ensuring that commands appended to

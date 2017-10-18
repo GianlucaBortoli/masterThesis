@@ -17,7 +17,7 @@ interact with the GPU to achieve hardware acceleration. In this sense it is
 reasonable to compare VR and 3D-maps web technologies since they both use WebGL
 in their core. Furthermore, virtual reality applications are even more
 performance-demanding from the real-time point of view, since even relatively
-small latencies (ie. in the order of tenths of milliseconds) can make a product
+small latencies (i.e. in the order of tenths of milliseconds) can make a product
 completely unusable and annoy the human eyesight.
 
 
@@ -27,7 +27,7 @@ Inspiron 15R 5521 notebook\footnote{\url{http://www.dell.com/us/dfh/p/inspiron-1
 whose hardware specifications are shown in Table \ref{tab:notebook_specs}.
 Since 3D graphics performance highly depends on the GPU installed on the system,
 the results presented in Chapter \ref{cha:experiments} are likely to be overtaken
-if better graphics hardware (eg. a more powerful dedicated GPU) is installed.
+if better graphics hardware (e.g., a more powerful dedicated GPU) is installed.
 \begin{table}[!htb]
     \centering
     \caption{The test machine hardware specifications.}
@@ -44,14 +44,14 @@ real-time analysis, the worst possible scenario is the one of interest for
 computing the WCET of a task. To achieve this situation in the test application,
 Google Chrome is always run from scratch with only one active tab. Moreover, the browser
 is forced not to cache any part of the JavaScript application code but,
-at the same time, it is essential to eliminate the map retrival time.
+at the same time, it is essential to eliminate the map retrieval time.
 Usually map tiles are
 downloaded via HTTP using the REST APIs a terrain server exposes to the clients.
 Even the time the navigator takes to download a small portion of the terrain
-can be orders of magniture bigger than all the rest of the response/computation time.
+can be orders of magnitude bigger than all the rest of the response/computation time.
 Hence, this objective is obtained allowing the browser to locally save the
 tiles downloaded during a ``warm-up'' phase. This allows to significantly lower
-the map retrival time during the ``real'' experiment without jeopardizing the
+the map retrieval time during the ``real'' experiment without jeopardizing the
 timings of the entire trace. Furthermore, the browser was the only task executed
 on the system during the tests. Being the system completely unloaded, increasing
 the priority associated to the processes/threads of the browser would not improve
@@ -112,7 +112,7 @@ allows to measure nearly everything that is accessible from JavaScript, even
 though it may not be enough in some situation.
 
 Finally, a post-process task is required to get insights from the raw data.
-The CSV exported by the Web Tracing Framweork has the following structure:
+The CSV exported by the Web Tracing Framework has the following structure:
 \begin{equation*}
     <time,\,value,\,total\_time,\,own\_time,\,arguments>
 \end{equation*}
@@ -134,13 +134,13 @@ where:
         to the \emph{value} function.
 \end{itemize}
 
-Clearly, being the computaton of latencies the main aim this framework, the most
+Clearly, being the computation of latencies the main aim this framework, the most
 relevant fields to be later analyzed are the \emph{time}, the \emph{total\_time}
 and the \emph{own\_time} values.
 
 
 \subsection{Chrome's Trace Event Profiler}\label{sec:chrome_trace_event_prof}
-The other foundamental tool used to trace the test application is the trace
+The other fundamental tool used to trace the test application is the trace
 event profiler embedded into Google Chrome. This is another important reason why
 Chrome is preferred as browser for the entire work, since it allows to diagnose
 performance issues and to see what Chrome is really doing ``under the surface''.
@@ -152,7 +152,7 @@ hierarchical view for each thread in each process'' of the browser. This results
 in a huge amount of information, but it helps to identify performance bottlenecks
 and to spot any kind of event happening to the browser instance. Hence, this tool
 allows to
-better analyze a web application, collecting all the events occuring when the
+better analyze a web application, collecting all the events occurring when the
 application is running starting from the renderer processes IPC up to every single
 function that is executed by the GPU process.
 
@@ -177,7 +177,7 @@ as flame graphs~\cite{gregg2016flame}.
 \end{figure}
 
 The output format of this tool is a JavaScript Object Notation (JSON) file with
-several fieds. The ones of interest for the purpose of this work are the following:
+several fields. The ones of interest for the purpose of this work are the following:
 \begin{lstlisting}
 {
   "pid": 5782,
@@ -216,7 +216,7 @@ where:
         microseconds).
 \end{itemize}
 
-Among all the abovementioned values, the most important ones during the experiments
+Among all the aforementioned values, the most important ones during the experiments
 are the \emph{ts} and the \emph{tdur}; they allow to specify when an event has been
 fired and for how much time the thread computing that function run.
 
@@ -254,9 +254,9 @@ analysis and to focus on the different parts of the navigator. For example, the
 ``no-map'' mode is conceived to get rid of the map but, at the same time, to keep
 all the base functionalities of the navigator. To some extent, the partial traces
 obtained from all these scenarios can be utilized to compare each other and spot
-their similarities and/or differencies.
+their similarities and/or differences.
 
 Finally, a Python script is used to split and to graphically display the
 timings extracted from the traces. Having a visual representation is often very
-useful to better undestand what is happening as the time passes inside the application
+useful to better understand what is happening as the time passes inside the application
 trace.

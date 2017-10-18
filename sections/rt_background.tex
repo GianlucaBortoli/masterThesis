@@ -19,7 +19,7 @@ jobs composing a task can be better understood looking at Figure \ref{img:task_m
     \label{img:task_model}
 \end{figure}
 
-Every job is formally defined as a touple
+Every job is formally defined as a tuple
 \( J_{i,\,k} = \left(r_{i,\,k}, \;f_{i,\,k}, \;c_{i,\,k}\right) \) where:
 \begin{itemize}
     \item the subscript \( i \) specifies the number of the task inside the task 
@@ -50,7 +50,7 @@ variable described by a certain Probability Mass Function (PMF) since it
 takes values in the discrete field.
 The i.i.d. assumption is one of the milestones of the real-time modeling theory.
 However, the analysis proposed in Chapter \ref{cha:rt_model} will relax this 
-constraint following the study proposed by Villalba et al
+constraint following the study proposed by Villalba et al.
 in~\cite{villalba2017probabilistic}, where a novel mathematical model is applied
 in order to describe computation times that are not following the i.i.d.
 assumption.
@@ -166,7 +166,7 @@ holds.
 Temporal isolation allows the system designer to analyze every
 task on its own, making its life much easier.
 
-Given the relevance of the resource reservation algorighm, the so called
+Given the relevance of the resource reservation algorithm, the so called
 SCHED\_DEADLINE~\cite{lelli2016deadline} scheduling policy is available
 in the mainline Linux kernel (along with SCHED\_FIFO and SCHED\_RR) from the
 3.14 version and it is based on EDF.
