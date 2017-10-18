@@ -1,17 +1,17 @@
 %!TEX root=../thesis.tex
 \chapter{Real-Time background} \label{cha:rt_background}
 
-The work described in this thesis has many theoretical foundations that has to be
-clear in order to understand the reasons behind some of the design choices and
+The work described in this thesis has many theoretical foundations that have to be
+cleared in order to understand the reasons behind some of the design choices and
 assumptions. All the needed notions in the real-time theory are explained in the
 following sections.
 
 
 \section{Task model} \label{sec:task_model}
-This model considers a set of real-time tasks \( T = \{\tau_{i}\} \)
+This model considers a set of real-time tasks \( \mathcal{T} = \{\tau_{i}\} \)
 sharing a Central Processing Unit (CPU). Every task
 is composed of a stream of jobs \( J_{i,\,k} \) identifying the \( k^{th} \)
-instance of the \( i^{th} \) task in the set \( T \). The concept of multiple
+instance of the \( i^{th} \) task in the set \( \mathcal{T} \). The concept of multiple
 jobs composing a task can be better understood looking at Figure \ref{img:task_model}.
 \begin{figure}[!htb]
     \center{\includegraphics[width=0.7\linewidth]{task_model.png}}
@@ -23,17 +23,17 @@ Every job is formally defined as a touple
 \( J_{i,\,k} = \left(r_{i,\,k}, \;f_{i,\,k}, \;c_{i,\,k}\right) \) where:
 \begin{itemize}
     \item the subscript \( i \) specifies the number of the task inside the task 
-        set \( T \)
+        set \( \mathcal{T} \)
     \item the subscript \( k \) specifies the instance of the job belonging to
         the \( i^{th} \) task
-    \item \( r_{i,\,k} \) is the \emph{release} time; it is the time when
+    \item \( r_{i,\,k} \) is the \emph{release time}; it is the time when
         the job arrives to the scheduler and it can be chosen for execution
         by the system (and actually taken in charge by the CPU). In Figure
         \ref{img:task_model} it is represented by the down arrows along the
         timeline.
-    \item \( f_{i,\,k} \) is the \emph{finishing} time; it is the instant when
+    \item \( f_{i,\,k} \) is the \emph{finishing time}; it is the instant when
         the computation for the job \( J_{i,\,k} \) ends.
-    \item \( c_{i,\,k} \) is the \emph{computation} time; it is the amount of
+    \item \( c_{i,\,k} \) is the \emph{computation time}; it is the amount of
         time for which the job \( J_{i,\,k} \) is running. This can also be seen
         as the real load on the CPU, that is symbolized by the rectangles
         in Figure \ref{img:task_model}.
@@ -55,6 +55,23 @@ in~\cite{villalba2017probabilistic}, where a novel mathematical model is applied
 in order to describe computation times that are not following the i.i.d.
 assumption.
 
+Not all the real-time tasks are equal. The different types existing in
+the literature are \emph{periodic}, \emph{aperiodic} and \emph{sporadic}.
+A periodic task has regular structure
+and it is triggered every fixed period \( T_{i} \). Its lifetime can be seen as
+a cycle, where it activates at time \( r_{i,\,k} \), it executes for an amount 
+of time \( c_{i,\,k} \) and then it waits for the next period to start again.
+The loop exit condition depends on the specific application.\\
+On the contrary, as the name suggests, an aperiodic task has non-periodic arrivals.
+Moreover there is no minimum inter-arrival time between the jobs and,
+most of the times, these tasks do not have any recurrent structure. They are used
+to model operations occurring rarely and that are irregular during the lifetime
+of the whole system.\\
+Finally, the sporadic task is very similar to the periodic one. Both have a minimum
+inter-arrival time between each activation, even though it may not be always the
+same throughout the entire execution. A sporadic task is mainly triggered by an
+external event (e.g.,. a network packet) instead of using a timer.
+
 Another very important concept is the worst-case execution time (WCET), which
 represents the upper bound for the fraction of CPU time spent to execute a task
 \( \tau_{i} \). Computing the WCET value may involve statistical testing~\cite{bernat2002wcet}
@@ -65,7 +82,7 @@ observed during different executions of the program.
 Moreover, the total system utilization \( W_{tot} \) can be computed using
 the following equation:
 \begin{equation}\label{eq:system_utilization}
-    W_{tot} = \displaystyle\sum_{i} WCET_{i}
+    W_{tot} = \displaystyle\sum_{i} \frac{WCET_i}{T_i}
 \end{equation}
 
 Furthermore, every real-time job has to respect a temporal constraint called
@@ -85,27 +102,6 @@ possible to say that a deadline is respected if
 In this case, the value \( p_{i} \) is the probability to meet the deadline associated
 with the task \( \tau_{i} \).
 
-
-\section{Different types of tasks}
-Not all the real-time tasks are equal. The different types existing in
-the literature are \emph{periodic}, \emph{aperiodic} and \emph{sporadic}.
-
-A periodic task has regular structure
-and it is triggered every fixed period \( T_{i} \). Its lifetime can be seen as
-a cycle, where it activates at time \( r_{i,\,k} \), it executes for an amount 
-of time \( c_{i,\,k} \) and then it waits for the next period to start again.
-The loop exit condition depends on the specific application.\\
-On the contrary, as the name suggests, an aperiodic task has non-periodic arrivals.
-Moreover there is no minimum inter-arrival time between the jobs and,
-most of the times, these tasks do not have any recurrent structure. They are used
-to model operations occurring rarely and that are irregular during the lifetime
-of the whole system.\\
-Finally, the sporadic task is very similar to the periodic one. Both have a minimum
-inter-arrival time between each activation, even though it may not be always the
-same throughout the entire execution. A sporadic task is mainly triggered by an
-external event (e.g.,. a network packet) instead of using a timer.
-
-
 \section{Scheduler} \label{sec:scheduler}
 As it is possible to imagine, tasks do not run on bare hardware.
 The Operating System (OS) creates the illusion that each task has a virtual CPU
@@ -124,9 +120,9 @@ scheduling a set of tasks, starts its job.
 There exist several scheduling algorithms that can be used to select which task 
 has to be executed at every instant \emph{t}. In general, it is
 possible to say that a scheduling algorithm \emph{A} generates a schedule
-\( \sigma_{A}\left(t\right) \) starting from a set of tasks \( T = \{\tau_{i}\} \).
+\( \sigma_{A}\left(t\right) \) starting from a set of tasks \( \mathcal{T} = \{\tau_{i}\} \).
 Furthermore, a schedulability test can be performed to see if the scheduling
-algorithm \( A \) is able to schedule a given task set \( T \). This checks
+algorithm \( A \) is able to schedule a given task set \( \mathcal{T} \). This checks
 if the schedule \( \sigma_{A}\left(t\right) \) generated by the algorithm \emph{A}
 guarantees that every deadline (probabilistic or not) is never missed.
 
@@ -151,7 +147,7 @@ called bandwidth and it is calculated as follows:
     B_{i} = \frac{Q_{i}^s}{T_{i}^s}
 \end{equation}
 
-In this way the scheduler reserves for each task an amount of computation
+In this way, the scheduler reserves for each task an amount of computation
 time \( Q_{i}^s \) in each reservation period \( T_{i}^s \). This constraint
 prevents tasks from running for more time than the selected budget and
 therefore each task does not need to pay attention to the other tasks running

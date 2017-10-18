@@ -314,17 +314,17 @@ state is directly visible to the observer, making the state transition probabili
 the only parameters. On the other hand, in a hidden Markov model the states are
 not directly visible but only their output is.
 
-The MCTM just explained can be described as a triple \(\{M,\,P,\,C\}\), where:
+The MCTM just explained can be described as a triple \(\{\mathcal{M},\,\mathcal{P},\,\mathcal{C}\}\), where:
 \begin{itemize}
-    \item \( M = \{ m_1,\,\dots,\,m_N \} \) is the set of modes.
-    \item \( P = (p_{a,\,b}) \) is the mode transition matrix, where
+    \item \( \mathcal{M} = \{ m_1,\,\dots,\,m_N \} \) is the set of modes.
+    \item \( \mathcal{P} = (p_{a,\,b}) \) is the mode transition matrix, where
         \(a, b \in M\).
-    \item \( C = \{ C_{m_j} : m_j \in M \} \) is the set of probability
+    \item \( \mathcal{C} = \{ C_{m_j} : m_j \in M \} \) is the set of probability
         distributions of the computation times for each mode.
 \end{itemize}
 
 After specifying how the mathematical model works, the next step is to discover
-the values for the \(M\), \(P\) and \(C\) parameters. This task is known as the
+the values for the \(\mathcal{M}\), \(\mathcal{P}\) and \(\mathcal{C}\) parameters. This task is known as the
 \emph{HMM learning problem} which, given a limited output sequence (i.e., the
 sequence of the computation times inside a trace),
 finds the best set of parameters which best fits that sequence.
@@ -422,8 +422,8 @@ the following parameters:
     \item budget \( Q_{i}^s = 2\,ms \)
 \end{itemize}
 
-Figure \ref{img:deadline_comparison} presents the probability of respecting the deadline, expressed as the number of jobs that finish before the deadline over the total number of jobs. The figure compares the results obtained with a resource reservation simulator (dotted red line), the i.i.d.
-approximation (dashed yellow line)  and the 2-states MCTM (blue solid line). It is important to point out that the i.i.d. approximation of the model overestimates the probability of respecting
+Figure \ref{img:deadline_comparison} presents the probability of respecting the deadline, expressed as the number of jobs that finish before the deadline over the total number of jobs. The figure compares the results obtained with a resource reservation simulator (dotted yellow line), the i.i.d.
+approximation (dashed purple line), the 2-states MCTM (blue solid line) and the 3-states MCTM (red dash-dotted line) It is important to point out that the i.i.d. approximation of the model overestimates the probability of respecting
 the deadline with respect to the simulation results. This optimism in the analysis could be dangerous because the analysis tool is providing a guarantee that the system is not able to deliver.
 
 Moreover, none of the models found by the HMM learner/decoder algorithms is able
