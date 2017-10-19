@@ -1,0 +1,16 @@
+sudo: required
+dist: trusty
+before_install:
+- sudo apt-get -qq update && sudo apt-get install -y --no-install-recommends texlive-fonts-recommended
+  texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended
+script:
+- make
+deploy:
+  provider: releases
+  api_key:
+    secure: prEllnsc9SKzc6V/oU2gIKmRhimg8lceXTUsmNl9w11pdnVoTTFf2ZoCqGkK3kohmatvEW594YFJkX2k3e/ATFtLzPy5bteHgtEECA/X+pSZViM5mTtxxMhTYRVKd8dk4IV13ipHzzb1z5WK0qt57fT3Sq+zcTWOJEKIXtB0pMHeOMvJOqCHUlCU0meglbiY09UI3GR23cdlTy0MDTK3xky9ezVusDj+DvStD1f04eZokwo1Z/z1AU+l6b3Zt+7QuUSHgtPwy+jEQDKFBIg9sKsseS8ODIUpVHAcdFE658kkDhF4G4qpcpzYkUiggXTl3K3h8XfDJF97chlewBv0J84BXo2TwPq/Gxq1YWxEbe3NtKuRrx1Ob65zwLkaOXVaoqiY41zNH3XJpUT4ULY34IbG8YzM5+2WfXvoRpkmSGd1IjGZQU9iamBiQpmj6DfUfNLnSfcQxOjYmlfXPbPlF8RUtHILIPXTrLIdbDt7yPqK25NtBtuntUi8xinFNcotKvlBWr6hwJtkh9fVKFmFzzNkA9yL0uCt/eQuvkWntRkdvjKpMA/HJ3Xrct1eRAt0LvPganGTrfmZhyTfbsKoAnGfyS0gW9ssvm6mFHyNrhqRI0HDnszTOr5kcD5Vu2A4tiHeFM+i2EtSSkZPjL3SxNd2gRK6RVwE5qKPZ940ef0=
+  file: thesis.pdf
+  skip_cleanup: true
+  on:
+    repo: GianlucaBortoli/masterThesis
+    tags: true
